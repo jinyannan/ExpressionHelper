@@ -7,7 +7,6 @@
 	<classpathentry kind="src" path="src/Expression"/>
 	<classpathentry kind="src" path="src/EntryHelper"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Aardwolf.K/Documents/antlr-3.5.2-complete.jar"/>
-	<classpathentry kind="lib" path="C:/Software/Antlr/AntlrPro/antlrJar/antlrworks-1.5.jar"/>
+	<classpathentry kind="lib" path="antlr-3.5.2-complete.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
