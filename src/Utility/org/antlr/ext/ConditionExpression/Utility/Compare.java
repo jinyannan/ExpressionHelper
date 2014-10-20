@@ -4,7 +4,17 @@ public class Compare
 {
 	public static boolean AreEqual(Object leftValue, Object rightValue)
 	{
-		if (leftValue instanceof String && rightValue instanceof String)
+		/**
+		 * Aardwolf.K
+		 * 如果leftValue为null返回false
+		 */
+		if(leftValue == null)
+			return false;
+		/**
+		 * Aardwolf.K
+		 * 左右有一个为字符串即对比
+		 */
+		if (leftValue instanceof String || rightValue instanceof String)
 		{
 			return leftValue.equals(rightValue);
 		}else if (leftValue instanceof Boolean && rightValue instanceof Boolean) {
@@ -43,11 +53,24 @@ public class Compare
 
 	public static boolean AreNotEqual(Object leftValue, Object rightValue)
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果leftValue为null返回false
+		 */
+		if(leftValue == null)
+			return false;
 		return !AreEqual(leftValue, rightValue);
 	}
 
 	public static boolean IsGreaterThan(Object leftValue, Object rightValue)
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果leftValue为null返回false
+		 */
+		if(leftValue == null)
+			return false;
+		
 		if (leftValue instanceof String && rightValue instanceof String)
 		{
 			return ((String)leftValue).compareTo((String)rightValue) > 0;
@@ -86,6 +109,13 @@ public class Compare
 
 	public static boolean IsGreaterOrEqual(Object leftValue, Object rightValue)
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果leftValue为null返回false
+		 */
+		if(leftValue == null)
+			return false;
+		
 		if (leftValue instanceof String && rightValue instanceof String)
 		{
 			return ((String)leftValue).compareTo((String)rightValue) >= 0;
@@ -123,11 +153,24 @@ public class Compare
 
 	public static boolean IsLessThan(Object leftValue, Object rightValue)
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果leftValue为null返回false
+		 */
+		if(leftValue == null)
+			return false;
+		
 		return !IsGreaterOrEqual(leftValue, rightValue);
 	}
 
 	public static boolean IsLessOrEqual(Object leftValue, Object rightValue)
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果leftValue为null返回false
+		 */
+		if(leftValue == null)
+			return false;
 		return !IsGreaterThan(leftValue, rightValue);
 	}
 }

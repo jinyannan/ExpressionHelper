@@ -1,0 +1,1063 @@
+package ExpressionHelper;
+
+/** 
+ data 格式：
+ 数组：
+ 0 - DataSet     Head List Cert Container
+ 1 - string      状态字
+ 2 - int数组     各个table的记录集号
+ 
+*/
+public class EntryHelper
+{
+	public static Object EntryGetValue(String funcName, Object[] funcParams, Object data)
+	{
+
+		if (DotNetToJavaStringHelper.isNullOrEmpty(funcName))
+		{
+			throw new NotImplementedException(String.format("函数%1$s未实现！",GetFuncString(funcName, funcParams)));
+		}
+
+		//不区分大小写
+		funcName = funcName.toUpperCase();
+		char firstChar = funcName.substring(0, 1).toCharArray()[0];
+
+		//为提高效率 这里分为两级处理
+		if (firstChar >= 'A' && firstChar <= 'G')
+		{
+			return GetValueAtoG(funcName, funcParams, data);
+		}
+		else if (firstChar >= 'H' && firstChar <= 'N')
+		{
+			return GetValueHtoN(funcName, funcParams, data);
+		}
+		else if (firstChar >= 'O' && firstChar <= 'Z')
+		{
+			return GetValueOtoZ(funcName, funcParams, data);
+		}
+		else
+		{
+			throw new NotImplementedException(String.format("函数%1$s未实现",GetFuncString(funcName, funcParams)));
+		}
+
+//AtoG:
+//    Exit Function
+
+//HtoN:
+//    Select Case bstrFuncName
+//        '格式:HEAD/LIST(字段名)
+//        'HEAD/LIST为自数据库中取出的原始字段值
+//        'HEAD/LIST只适用于表中除VARCHAR类型外的字段,VARCHAR类型字段单独列出
+//        '目前可以通过HEAD/LIST取出所有字段的值，但是不支持取其中几位，注意各字段的类型
+//        'H883中使用
+
+
+//        Case Else
+//            GoTo ErrorHandler
+//    End Select
+//    Exit Function
+
+//OtoZ:
+//    Select Case bstrFuncName
+//        'H883中使用
+
+
+//        Case Else:
+//            GoTo ErrorHandler
+//    End Select
+//    Exit Function
+
+	}
+
+	public static Object GetValueAtoG(String funcName, Object[] funcParams, Object data)
+	{
+		DataSet entryData = null;
+		String statusWord = null;
+		int[] bookmark;
+
+		RefObject<DataSet> tempRef_entryData = new RefObject<DataSet>(entryData);
+		RefObject<String> tempRef_statusWord = new RefObject<String>(statusWord);
+		RefObject<Integer[]> tempRef_bookmark = new RefObject<Integer[]>(bookmark);
+		GetEntryData(data, tempRef_entryData, tempRef_statusWord, tempRef_bookmark);
+		entryData = tempRef_entryData.argvalue;
+		statusWord = tempRef_statusWord.argvalue;
+		bookmark = tempRef_bookmark.argvalue;
+
+		//临时变量
+		java.util.Date t = new java.util.Date(0);
+		String str;
+		int n;
+		double dbl;
+		int index; //表体的bookmark
+		DataColumn dataColumn;
+
+//C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
+//		switch (funcName)
+//ORIGINAL LINE: case "D_DATE":
+		if (funcName.equals("D_DATE"))
+		{
+				t = entryData.Tables["Head"].Rows[0]["D_DATE"] == DBNull.getValue() ? java.util.Date.getMinValue() : entryData.Tables["Head"].Rows[0].<java.util.Date>Field("D_DATE");
+				return t;
+
+			//        'H883中使用
+			//        '格式:
+			//        '格式:DBT(字段名，(起始日期1；终止日期1),(起始日期2；终止日期2)，...)
+			//        '功能描述：
+			//        '   如果该日期字段的值在范围中，返回True，否则返回False
+			//        '   如:DBT("D_DATE","1997-01-01;1999-12-31","2000-01-01;2000-12-31")
+			//        '   两对参数之间为或的关系，上例即表示为:
+			//        '   申报日期在1997-01-01和1999-12-31之间,或者在2000-01-01和2000-12-31之间
+			//        '   对上述条件取反则表示:
+			//        '   申报日期不能在1997-01-01和1999-12-31之间,并且不能在2000-01-01和2000-12-31之间
+			//        '   符合逻辑运算规则 !(A || B) <==> !A && !B
+			//'        Case "DBT":
+			//'            UserFunction_GetValue = False
+			//'
+			//'            If UBound(vParam) < 1 Then
+			//'                GoTo ErrorHandler
+			//'            End If
+			//'
+			//'            If Not isempty(rsHead.Fields(vParam(0)).Value) Then
+			//'                vDate = CDate(rsHead.Fields(vParam(0)).Value)
+			//'                For i = 1 To UBound(vParam)
+			//'                    vMinMax = Split(vParam(i), ";")
+			//'
+			//'                    If vDate >= CDate(vMinMax(LBound(vMinMax))) And vDate <= CDate(vMinMax(UBound(vMinMax))) Then
+			//'                        UserFunction_GetValue = True
+			//'                        Exit For
+			//'                    End If
+			//'                Next i
+			//'            End If
+
+		}
+//ORIGINAL LINE: case "DISTRICT_CODE":
+		else if (funcName.equals("DISTRICT_CODE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["DISTRICT_CODE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("DISTRICT_CODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "CUT_MODE":
+		else if (funcName.equals("CUT_MODE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["CUT_MODE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("CUT_MODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "DUTY_MODE":
+		else if (funcName.equals("DUTY_MODE"))
+		{
+				index = bookmark[1];
+				str = entryData.Tables["List"].Rows[index]["DUTY_MODE"] == DBNull.getValue() ? "" : entryData.Tables["List"].Rows[0].<String>Field("DUTY_MODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "CODE_TS":
+		else if (funcName.equals("CODE_TS"))
+		{
+				index = bookmark[1];
+				str = entryData.Tables["List"].Rows[index]["CODE_TS"] == DBNull.getValue() ? "" : entryData.Tables["List"].Rows[0].<String>Field("CODE_TS");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "CO_OWNER":
+		else if (funcName.equals("CO_OWNER"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["CO_OWNER"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("CO_OWNER");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "BILL_NO":
+		else if (funcName.equals("BILL_NO"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["BILL_NO"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("BILL_NO");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "AGENT_NAME":
+		else if (funcName.equals("AGENT_NAME"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["AGENT_NAME"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("AGENT_NAME");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "AGENT_CODE":
+		else if (funcName.equals("AGENT_CODE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["AGENT_CODE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("AGENT_CODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "FEE_MARK":
+		else if (funcName.equals("FEE_MARK"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["FEE_MARK"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("FEE_MARK");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "G_NAME":
+		else if (funcName.equals("G_NAME"))
+		{
+				index = bookmark[1];
+				str = entryData.Tables["List"].Rows[index]["G_NAME"] == DBNull.getValue() ? "" : entryData.Tables["List"].Rows[0].<String>Field("G_NAME");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "G_QTY_2":
+		else if (funcName.equals("G_QTY_2"))
+		{
+				index = bookmark[1];
+				dbl = entryData.Tables["List"].Rows[index]["QTY_2"] == DBNull.getValue() ? 0 : Double.parseDouble(entryData.Tables["List"].Rows[0]["QTY_2"]);
+				return dbl;
+
+		}
+//ORIGINAL LINE: case "G_QTY_1":
+		else if (funcName.equals("G_QTY_1"))
+		{
+				index = bookmark[1];
+				dbl = entryData.Tables["List"].Rows[index]["QTY_1"] == DBNull.getValue() ? 0 : Double.parseDouble(entryData.Tables["List"].Rows[0]["QTY_1"]);
+				return dbl;
+
+
+		}
+//ORIGINAL LINE: case "G_UNIT":
+		else if (funcName.equals("G_UNIT"))
+		{
+				index = bookmark[1];
+				str = entryData.Tables["List"].Rows[index]["G_UNIT"] == DBNull.getValue() ? "" : entryData.Tables["List"].Rows[0].<String>Field("G_UNIT");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "CERT":
+		else if (funcName.equals("CERT"))
+		{
+				if (entryData.Tables["Cert"].Rows.size() < 1)
+				{
+					return "";
+				}
+				dataColumn = entryData.Tables["Cert"].Columns[String.valueOf(funcParams[0])];
+				if (dataColumn.DataType == String.class || dataColumn.DataType == Character.class)
+				{
+					str = entryData.Tables["Cert"].Rows[0][dataColumn] == DBNull.getValue() ? "" : entryData.Tables["Cert"].Rows[0].<String>Field(dataColumn);
+					if (funcParams.length < 3)
+					{
+						return str;
+					}
+					else
+					{
+						return str.substring(Integer.parseInt(funcParams[1]) - 1, Integer.parseInt(funcParams[1]) - 1 + Integer.parseInt(funcParams[2]));
+					}
+				}
+				else if (dataColumn.DataType == java.math.BigDecimal.class || dataColumn.DataType == Double.class)
+				{
+					return entryData.Tables["Cert"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : Double.parseDouble(entryData.Tables["Cert"].Rows[0][dataColumn]);
+				}
+				else if (dataColumn.DataType == Integer.class)
+				{
+					return entryData.Tables["Cert"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : entryData.Tables["Cert"].Rows[0].<Integer>Field(dataColumn);
+				}
+				else
+				{
+					throw new RuntimeException(String.format("CERT:%1$s not deal", dataColumn.DataType));
+				}
+
+		}
+//ORIGINAL LINE: case "CONTAINER":
+		else if (funcName.equals("CONTAINER"))
+		{
+				if (entryData.Tables["Container"].Rows.size() < 1)
+				{
+					return "";
+				}
+				dataColumn = entryData.Tables["Container"].Columns[String.valueOf(funcParams[0])];
+				if (dataColumn.DataType == String.class || dataColumn.DataType == Character.class)
+				{
+					str= entryData.Tables["Container"].Rows[0][dataColumn] == DBNull.getValue() ? "" : entryData.Tables["Container"].Rows[0].<String>Field(dataColumn);
+					if (funcParams.length < 3)
+					{
+						return str;
+					}
+					else
+					{
+						return str.substring(Integer.parseInt(funcParams[1]) - 1, Integer.parseInt(funcParams[1]) - 1 + Integer.parseInt(funcParams[2]));
+					}
+				}
+				else if (dataColumn.DataType == java.math.BigDecimal.class || dataColumn.DataType == Double.class)
+				{
+					return entryData.Tables["Container"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : Double.parseDouble(entryData.Tables["Container"].Rows[0][dataColumn]);
+				}
+				else if (dataColumn.DataType == Integer.class)
+				{
+					return entryData.Tables["Container"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : entryData.Tables["Container"].Rows[0].<Integer>Field(dataColumn);
+				}
+				else
+				{
+					throw new RuntimeException(String.format("CONTAINER:%1$s not deal", dataColumn.DataType));
+				}
+
+		}
+//ORIGINAL LINE: case "ENTRY_ID":
+		else if (funcName.equals("ENTRY_ID"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["ENTRY_ID"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("ENTRY_ID");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "APPR_NO":
+		else if (funcName.equals("APPR_NO"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["APPR_NO"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("APPR_NO");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+		else
+		{
+				throw new NotImplementedException(String.format("函数%1$s未实现",GetFuncString(funcName, funcParams)));
+
+		}
+
+		//        'Changed by WuSongTao, on 2002-11-29
+		//        '为电子审单值班系统增加相应的函数。
+		//            Dim strTime As String
+		//        Case "ACE_ONDUTYUSE"
+		//            If IsEmpty(vParam) Or IsNull(vParam) Then
+		//                UserFunction_GetValue = GetGlobalConst(C_ACE, "ONDUTYUSE", , TrimString(rsHead("DECL_PORT")), , "0")
+		//            Else
+		//                UserFunction_GetValue = GetGlobalConst(C_ACE, "ONDUTYUSE", , TrimString(vParam(0)), , "0")
+		//            End If
+
+		//        Case "ACE_ONDUTYMODE"
+		//            If IsEmpty(vParam) Or IsNull(vParam) Then
+		//                UserFunction_GetValue = GetGlobalConst(C_ACE, "ONDUTYMODE", , TrimString(rsHead("DECL_PORT")), , "0")
+		//            Else
+		//                UserFunction_GetValue = GetGlobalConst(C_ACE, "ONDUTYMODE", , TrimString(vParam(0)), , "0")
+		//            End If
+
+		//        Case "ACE_ONDUTYBEGINTIME"
+		//            If IsEmpty(vParam) Or IsNull(vParam) Then
+		//                strTime = TrimString(GetGlobalConst(C_ACE, "ONDUTYBEGINTIME", , TrimString(rsHead("DECL_PORT"))))
+		//                UserFunction_GetValue = ConvertDateTimeToTime(strTime, "该关区" & TrimString(rsHead("DECL_PORT")) & "值班开始时间没有或非法！")
+		//            Else
+		//                strTime = TrimString(GetGlobalConst(C_ACE, "ONDUTYBEGINTIME", , TrimString(vParam(0))))
+		//                UserFunction_GetValue = ConvertDateTimeToTime(strTime, "该关区" & TrimString(vParam(0)) & "值班开始时间没有或非法！")
+		//            End If
+
+		//        Case "ACE_ONDUTYENDTIME"
+		//            If IsEmpty(vParam) Or IsNull(vParam) Then
+		//                strTime = TrimString(GetGlobalConst(C_ACE, "ONDUTYENDTIME", , TrimString(rsHead("DECL_PORT"))))
+		//                UserFunction_GetValue = ConvertDateTimeToTime(strTime, "该关区" & TrimString(rsHead("DECL_PORT")) & "值班结束时间没有或非法！")
+		//            Else
+		//                strTime = TrimString(GetGlobalConst(C_ACE, "ONDUTYENDTIME", , TrimString(vParam(0))))
+		//                UserFunction_GetValue = ConvertDateTimeToTime(strTime, "该关区" & TrimString(vParam(0)) & "值班结束时间没有或非法！")
+		//            End If
+
+		//        Case "ACE_ONDUTYTIME"
+		//            UserFunction_GetValue = Time
+		//        'End of Change. 2002-11-29
+
+		//        Case Else
+		//            GoTo ErrorHandler
+		//    End Select
+
+	}
+
+	public static Object GetValueHtoN(String funcName, Object[] funcParams, Object data)
+	{
+		DataSet entryData = null;
+		String statusWord = null;
+		int[] bookmark;
+
+		RefObject<DataSet> tempRef_entryData = new RefObject<DataSet>(entryData);
+		RefObject<String> tempRef_statusWord = new RefObject<String>(statusWord);
+		RefObject<Integer[]> tempRef_bookmark = new RefObject<Integer[]>(bookmark);
+		GetEntryData(data, tempRef_entryData, tempRef_statusWord, tempRef_bookmark);
+		entryData = tempRef_entryData.argvalue;
+		statusWord = tempRef_statusWord.argvalue;
+		bookmark = tempRef_bookmark.argvalue;
+
+		//临时变量
+		java.util.Date t = new java.util.Date(0);
+		String str;
+		int n;
+		int index; //表体的bookmark
+		DataColumn dataColumn;
+
+//C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
+//		switch (funcName)
+//ORIGINAL LINE: case "HEAD":
+		if (funcName.equals("HEAD"))
+		{
+				if (funcParams.length < 1)
+				{
+					throw new RuntimeException(String.format("函数%1$s参数个数错！", GetFuncString(funcName, funcParams)));
+				}
+
+				if (String.valueOf(funcParams[0]).toUpperCase().equals("STATUS_RESULT"))
+				{
+					return statusWord;
+				}
+				else
+				{
+					dataColumn = entryData.Tables["Head"].Columns[String.valueOf(funcParams[0])];
+					if (dataColumn.DataType == String.class || dataColumn.DataType == Character.class)
+					{
+						str = entryData.Tables["Head"].Rows[0][dataColumn] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field(dataColumn);
+						if (funcParams.length < 3)
+						{
+							return str;
+						}
+						else
+						{
+							return str.substring(Integer.parseInt(funcParams[1]) - 1, Integer.parseInt(funcParams[1]) - 1 + Integer.parseInt(funcParams[2]));
+						}
+					}
+					else if (dataColumn.DataType == java.math.BigDecimal.class || dataColumn.DataType == Double.class)
+					{
+						return entryData.Tables["Head"].Rows[0][dataColumn] == DBNull.getValue() ? 0 :Double.parseDouble(entryData.Tables["Head"].Rows[0][dataColumn]);
+					}
+					else if (dataColumn.DataType == Integer.class)
+					{
+						return entryData.Tables["Head"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : entryData.Tables["Head"].Rows[0].<Integer>Field(dataColumn);
+					}
+					else if (dataColumn.DataType == java.util.Date.class)
+					{
+						return entryData.Tables["Head"].Rows[0][dataColumn] == DBNull.getValue() ? java.util.Date.getMinValue() : entryData.Tables["Head"].Rows[0].<java.util.Date>Field(dataColumn);
+					}
+					else
+					{
+						throw new RuntimeException(String.format("Head:%1$s not deal", dataColumn.DataType));
+					}
+				}
+		}
+//ORIGINAL LINE: case "LIST":
+		else if (funcName.equals("LIST"))
+		{
+				dataColumn = entryData.Tables["List"].Columns[String.valueOf(funcParams[0])];
+				if (dataColumn.DataType == String.class || dataColumn.DataType == Character.class)
+				{
+					str = entryData.Tables["List"].Rows[0][dataColumn] == DBNull.getValue() ? "" : entryData.Tables["List"].Rows[0].<String>Field(dataColumn);
+					if (funcParams.length < 3)
+					{
+						return str;
+					}
+					else
+					{
+						return str.substring(Integer.parseInt(funcParams[1]) - 1, Integer.parseInt(funcParams[1]) - 1 + Integer.parseInt(funcParams[2]));
+					}
+				}
+				else if (dataColumn.DataType == java.math.BigDecimal.class || dataColumn.DataType == Double.class)
+				{
+					return entryData.Tables["List"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : Double.parseDouble(entryData.Tables["List"].Rows[0][dataColumn]);
+				}
+				else if (dataColumn.DataType == Integer.class)
+				{
+					return entryData.Tables["List"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : entryData.Tables["List"].Rows[0].<Integer>Field(dataColumn);
+				}
+				else
+				{
+					throw new RuntimeException(String.format("List:%1$s not deal", dataColumn.DataType));
+				}
+
+		}
+//ORIGINAL LINE: case "LISTNUM":
+		else if (funcName.equals("LISTNUM"))
+		{
+				return entryData.Tables["List"].Rows.size();
+
+			//        'HIN/LIN判断表头/表体某字段值是否在列出的参数中
+			//        '格式:HIN/LIN(字段名，起位，长度，值1，值2，...)
+			//        '功能描述：
+			//        '   如果该字段某几位的值在列表中，返回True，否则返回False
+			//        'H883中使用
+			//        Case "HIN"
+			//            UserFunction_GetValue = False
+
+			//            If UBound(vParam) < 3 Then
+			//                GoTo ErrorHandler
+			//            End If
+
+			//            strCurrVal = Mid(rsHead.Fields(vParam(0)).Value, vParam(1), vParam(2))
+			//            For i = 3 To UBound(vParam)
+			//                If strCurrVal = vParam(i) Then
+			//                    UserFunction_GetValue = True
+			//                    Exit For
+			//                End If
+			//            Next i
+
+			//        'H883中使用
+			//        Case "LIN"
+			//            UserFunction_GetValue = False
+
+			//            If UBound(vParam) < 3 Then
+			//                GoTo ErrorHandler
+			//            End If
+			//            strCurrVal = Mid(rsList.Fields(vParam(0)).Value, vParam(1), vParam(2))
+
+			//            For i = 3 To UBound(vParam)
+			//                If strCurrVal = vParam(i) Then
+			//                    UserFunction_GetValue = True
+			//                    Exit For
+			//                End If
+			//            Next i
+		}
+//ORIGINAL LINE: case "I_E_FLAG":
+		else if (funcName.equals("I_E_FLAG"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["I_E_FLAG"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("I_E_FLAG");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "MANUAL_NO":
+		else if (funcName.equals("MANUAL_NO"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["MANUAL_NO"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("MANUAL_NO");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+
+
+
+			//        'HBT/LBT判断表头/表体某字段值是否在列出的两个参数的范围中
+			//        '格式:HBT/LBT(字段名，起位，长度，(最小值1；最大值1),(最小值2；最大值2)，...)
+			//        '功能描述:
+			//        '   如果该字段某几位的值在范围中，返回True，否则返回False
+			//        '   如:HBT("CODE_TS",1,10,"0102100000;0102900000","0201100000;0202300000")
+			//        '   两对参数之间为或的关系，上例即表示为:
+			//        '   商品编码在0102100000-0102900000之间,或者在0201100000-0202300000之间
+			//        '对上述条件取反则表示:
+			//        '   商品编码不能在0102100000-0102900000之间,并且不能在0201100000-0202300000之间
+			//        '   符合逻辑运算规则 !(A || B) <==> !A && !B
+			//        'H883中使用
+			//        Case "HBT"
+			//            UserFunction_GetValue = True
+			//            If UBound(vParam) < 3 Then
+			//                GoTo ErrorHandler
+			//            End If
+
+			//            strCurrVal = Mid(rsHead.Fields(vParam(0)).Value, vParam(1), vParam(2))
+
+			//            For i = 3 To UBound(vParam)
+
+			//                strSource = vParam(i)
+			//                strTemp = ""
+
+			//                For j = 1 To Len(strSource)
+			//                    If Mid(strSource, j, 1) <> ";" Then
+			//                        strTemp = strTemp + Mid(strSource, j, 1)
+			//                    Else
+			//                        If strCurrVal < strTemp Then
+			//                            UserFunction_GetValue = False
+			//                            Exit For
+			//                        Else
+			//                            strTemp = ""
+			//                        End If
+			//                    End If
+			//                Next
+
+			//                If UserFunction_GetValue Then
+			//                    UserFunction_GetValue = (strCurrVal <= strTemp)
+			//                    Exit For
+			//                End If
+			//            Next i
+
+			//        'H883中使用
+			//        Case "LBT"
+			//            UserFunction_GetValue = True
+			//            If UBound(vParam) < 3 Then
+			//                GoTo ErrorHandler
+			//            End If
+
+			//            strCurrVal = Mid(rsList.Fields(vParam(0)).Value, vParam(1), vParam(2))
+
+			//            For i = 3 To UBound(vParam)
+
+			//                strSource = vParam(i)
+			//                strTemp = ""
+
+			//                For j = 1 To Len(strSource)
+			//                    If Mid(strSource, j, 1) <> ";" Then
+			//                        strTemp = strTemp + Mid(strSource, j, 1)
+			//                    Else
+			//                        If strCurrVal < strTemp Then
+			//                            UserFunction_GetValue = False
+			//                            Exit For
+			//                        Else
+			//                            strTemp = ""
+			//                        End If
+			//                    End If
+			//                Next
+
+			//                If UserFunction_GetValue Then
+			//                    UserFunction_GetValue = (strCurrVal <= strTemp)
+			//                    Exit For
+			//                End If
+			//            Next
+		}
+//ORIGINAL LINE: case "LISTSUM":
+		else if (funcName.equals("LISTSUM"))
+		{
+				dataColumn = entryData.Tables["List"].Columns[String.valueOf(funcParams[0])];
+				double sum = 0;
+				for (int i = 0; i < entryData.Tables["List"].Rows.size(); i++)
+				{
+					sum += entryData.Tables["List"].Rows[0][dataColumn] == DBNull.getValue() ? 0 : Double.parseDouble(entryData.Tables["List"].Rows[0][dataColumn]);
+				}
+				return sum;
+
+		}
+//ORIGINAL LINE: case "LIKE":
+		else if (funcName.equals("LIKE"))
+		{
+				str = String.valueOf(funcParams[1]);
+				String strPattern = String.valueOf(funcParams[1]);
+				strPattern = strPattern.replace("*", "\\w*");
+				strPattern = strPattern.replace("?", "\\w?");
+				return System.Text.RegularExpressions.Regex.IsMatch(str, strPattern);
+
+		}
+//ORIGINAL LINE: case "LICENSE_NO":
+		else if (funcName.equals("LICENSE_NO"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["LICENSE_NO"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("LICENSE_NO");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "I_E_PORT":
+		else if (funcName.equals("I_E_PORT"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["I_E_PORT"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("I_E_PORT");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "INSUR_MARK":
+		else if (funcName.equals("INSUR_MARK"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["INSUR_MARK"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("INSUR_MARK");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+		else
+		{
+				throw new NotImplementedException(String.format("函数%1$s未实现", GetFuncString(funcName, funcParams)));
+
+		}
+
+	}
+
+	public static Object GetValueOtoZ(String funcName, Object[] funcParams, Object data)
+	{
+		DataSet entryData = null;
+		String statusWord = null;
+		int[] bookmark;
+
+		RefObject<DataSet> tempRef_entryData = new RefObject<DataSet>(entryData);
+		RefObject<String> tempRef_statusWord = new RefObject<String>(statusWord);
+		RefObject<Integer[]> tempRef_bookmark = new RefObject<Integer[]>(bookmark);
+		GetEntryData(data, tempRef_entryData, tempRef_statusWord, tempRef_bookmark);
+		entryData = tempRef_entryData.argvalue;
+		statusWord = tempRef_statusWord.argvalue;
+		bookmark = tempRef_bookmark.argvalue;
+
+		//临时变量
+		java.util.Date t = new java.util.Date(0);
+		String str;
+		int n;
+		int index; //表体的bookmark
+		DataColumn dataColumn;
+
+//C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a string member and was converted to Java 'if-else' logic:
+//		switch (funcName)
+//ORIGINAL LINE: case "SW":
+		if (funcName.equals("SW"))
+		{
+				return statusWord.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + 1);
+
+		}
+//ORIGINAL LINE: case "TRADE_MODE":
+		else if (funcName.equals("TRADE_MODE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRADE_MODE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRADE_MODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+
+		}
+//ORIGINAL LINE: case "TRADE_CO":
+		else if (funcName.equals("TRADE_CO"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRADE_CO"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRADE_CO");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "TRAF_MODE":
+		else if (funcName.equals("TRAF_MODE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRAF_MODE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRAF_MODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "ORIGIN_COUNTRY":
+		else if (funcName.equals("ORIGIN_COUNTRY"))
+		{
+				index = bookmark[1];
+				str = entryData.Tables["List"].Rows[index]["ORIGIN_COUNTRY"] == DBNull.getValue() ? "" : entryData.Tables["List"].Rows[0].<String>Field("ORIGIN_COUNTRY");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "TRADE_COUNTRY":
+		else if (funcName.equals("TRADE_COUNTRY"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRADE_COUNTRY"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRADE_COUNTRY");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "TRADE_NAME":
+		else if (funcName.equals("TRADE_NAME"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRADE_NAME"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRADE_NAME");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "OWNER_NAME":
+		else if (funcName.equals("OWNER_NAME"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["OWNER_NAME"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("OWNER_NAME");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "OWNER_CODE":
+		else if (funcName.equals("OWNER_CODE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["OWNER_CODE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("OWNER_CODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "TRANS_MODE":
+		else if (funcName.equals("TRANS_MODE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRANS_MODE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRANS_MODE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "OTHER_MARK":
+		else if (funcName.equals("OTHER_MARK"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["OTHER_MARK"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("OTHER_MARK");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "WRAP_TYPE":
+		else if (funcName.equals("WRAP_TYPE"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["WRAP_TYPE"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("WRAP_TYPE");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "UNIT_1":
+		else if (funcName.equals("UNIT_1"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["UNIT_1"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("UNIT_1");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "UNIT_2":
+		else if (funcName.equals("UNIT_2"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["UNIT_2"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("UNIT_2");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "TRADE_CURR":
+		else if (funcName.equals("TRADE_CURR"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRADE_CURR"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRADE_CURR");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+//ORIGINAL LINE: case "TRAF_NAME":
+		else if (funcName.equals("TRAF_NAME"))
+		{
+				str = entryData.Tables["Head"].Rows[0]["TRAF_NAME"] == DBNull.getValue() ? "" : entryData.Tables["Head"].Rows[0].<String>Field("TRAF_NAME");
+				if (funcParams.length < 2)
+				{
+					return str;
+				}
+				else
+				{
+					return str.substring(Integer.parseInt(funcParams[0]) - 1, Integer.parseInt(funcParams[0]) - 1 + Integer.parseInt(funcParams[1]));
+				}
+
+		}
+		else
+		{
+				throw new NotImplementedException(String.format("函数%1$s未实现", GetFuncString(funcName, funcParams)));
+		}
+
+	}
+
+	private static String GetFuncString(String funcName, Object[] funcParams)
+	{
+		if (funcParams == null)
+		{
+			return "";
+		}
+
+		StringBuilder paramString = new StringBuilder();
+//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
+		for (var m : funcParams)
+		{
+			if (paramString.length() > 0)
+			{
+				paramString.append(",");
+			}
+
+			if (m instanceof String)
+			{
+				paramString.append(String.format("\"%1$s\", m));
+			}
+			else
+			{
+				paramString.append(String.format("%1$s", m));
+			}
+		}
+		String errMsg = String.format("%1$s(%2$s)", funcName, paramString);
+		return errMsg;
+	}
+
+	private static void GetEntryData(Object data, RefObject<DataSet> entry, RefObject<String> statusWord, RefObject<Integer[]> bookmark)
+	{
+		entry.argvalue = null;
+		statusWord.argvalue = "";
+		bookmark.argvalue = null;
+
+		Object[] dataArray = (Object[])((data instanceof Object[]) ? data : null);
+		if (dataArray != null)
+		{
+			entry.argvalue = (DataSet)((dataArray[0] instanceof DataSet) ? dataArray[0] : null);
+			statusWord.argvalue = String.valueOf(dataArray[1]);
+			bookmark.argvalue = (int[])((dataArray[2] instanceof int[]) ? dataArray[2] : null);
+		}
+	}
+}

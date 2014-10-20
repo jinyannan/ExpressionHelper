@@ -195,7 +195,6 @@ public class FunctionExpression extends BaseExpression
 		else
 		{
 			StringBuilder paramString = new StringBuilder();
-//C# TO JAVA CONVERTER TODO TASK: There is no equivalent to implicit typing in Java:
 			for (Object m : funParams)
 			{
 				if (paramString.length() > 0)
@@ -229,7 +228,14 @@ public class FunctionExpression extends BaseExpression
 	*/
 	private Object BT(Tree tree, Object data) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
+		/**
+		 * Aardwolf.K
+		 * 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return false;
+		}
+		
 		Object value = VisitSubTree(tree.getChild(1), data);
 
 		for (int i = 2; i < tree.getChildCount(); i += 2)
@@ -298,8 +304,21 @@ public class FunctionExpression extends BaseExpression
 
 	private Object MID(Tree tree, Object data) throws NumberFormatException, Exception
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return "";
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return "";
+		}
+		if (VisitSubTree(tree.getChild(3), data) == null) {
+			return "";
+		}
+		
 		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
-
 		int from = Integer.parseInt(VisitSubTree(tree.getChild(2), data).toString());
 		int length = Integer.parseInt(VisitSubTree(tree.getChild(3), data).toString());
 
@@ -311,6 +330,16 @@ public class FunctionExpression extends BaseExpression
 
 	private Object LEFT(Tree tree, Object data) throws Exception
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return "";
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return "";
+		}
 		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
 		int length = Integer.parseInt(VisitSubTree(tree.getChild(2), data).toString());
 		//StringUtility.Mid(str, from, length);
@@ -319,6 +348,16 @@ public class FunctionExpression extends BaseExpression
 
 	private Object RIGHT(Tree tree, Object data) throws Exception
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return "";
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return "";
+		}
 		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
 		int length = Integer.parseInt(VisitSubTree(tree.getChild(2), data).toString());
 
@@ -327,12 +366,30 @@ public class FunctionExpression extends BaseExpression
 
 	private Object LEN(Tree tree, Object data) throws Exception
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果数据库为null，则返回0
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return 0;
+		}
 		String str = String.valueOf(VisitSubTree(tree.getChild(1), data).toString());
 		return str.length();
 	}
 
 	private Object CONTAIN(Tree tree, Object data) throws Exception
 	{
+		/**
+		 * Aardwolf.K
+		 * 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return false;
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return false;
+		}
+		
 		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
 		String find = String.valueOf(VisitSubTree(tree.getChild(2), data));
 
@@ -340,6 +397,7 @@ public class FunctionExpression extends BaseExpression
 	}
 
 	/** 
+	 * Aardwolf.K
 	 检查函数的参数个数，如果不对，直接报错
 	 
 	 @param funName

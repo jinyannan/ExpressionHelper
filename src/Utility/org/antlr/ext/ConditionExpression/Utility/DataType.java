@@ -66,13 +66,18 @@ public class DataType
 
 	/** 
 	 将数据转化为double类型
-	 
 	 @param value
 	 @return 
 	*/
 	public static double ConvertToDouble(Object value)
 	{
 		java.util.Date t = new java.util.Date(0);
+		/**
+		 * 如果value为null或者“”返回0
+		 */
+		if(value == null || value.toString().equals("")) 
+			return 0;
+		
 		if (IsNumber(value))
 		{
 			return (double) new Double(value.toString());
@@ -81,7 +86,13 @@ public class DataType
 		 * Aardwolf.K
 		 * */
 		else if (NetFunction.isValidDate(value.toString())) {
-			return NetFunction.toOADate((Date)value);
+			Date date = null;
+			try {
+				date = (Date)value;
+			} catch (Exception e) {
+				date = NetFunction.convertToDate(value.toString());
+			}
+			return NetFunction.toOADate(date);
 		}
 		/**
 		 * java 对日期的加减重新设计 by MZHY

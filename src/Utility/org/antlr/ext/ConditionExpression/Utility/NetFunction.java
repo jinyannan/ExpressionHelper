@@ -7,11 +7,11 @@ import java.util.Date;
 
 public class NetFunction {
 	private static long ONE_DAY = 24L * 60 * 60 * 1000;
-
+	private static SimpleDateFormat[] formats = { new SimpleDateFormat("yyyy-MM-dd"),
+			new SimpleDateFormat("yyyy/MM/dd") };
+	
 	public static boolean isValidDate(String str) {
 		boolean convertSuccess = false;
-		SimpleDateFormat[] formats = { new SimpleDateFormat("yyyy-MM-dd"),
-				new SimpleDateFormat("yyyy/MM/dd") };
 		for (SimpleDateFormat simpleDateFormat : formats) {
 			try {
 				simpleDateFormat.setLenient(false);
@@ -22,6 +22,22 @@ public class NetFunction {
 			}
 		}
 		return convertSuccess;
+	}
+	
+	public static Date convertToDate(String str) {
+		Date result = null;
+		for (SimpleDateFormat simpleDateFormat : formats) {
+				simpleDateFormat.setLenient(false);
+				try {
+					result = simpleDateFormat.parse(str);
+					break;
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		return result;
+		
 	}
 
 	public static Date fromOADate(double d) {
