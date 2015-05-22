@@ -1,8 +1,6 @@
-// $ANTLR 3.5.2 Expression.g 2014-09-01 15:44:06
+// $ANTLR 3.5.1 D:\\antlr\\Expression.g 2015-03-17 16:34:23
 package org.antlr.ext.ConditionExpression.Generated;
-
 import org.antlr.runtime.*;
-
 import java.util.Stack;
 import java.util.List;
 import java.util.ArrayList;
@@ -10,43 +8,43 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class ExpressionLexer extends Lexer {
 	public static final int EOF=-1;
-	public static final int T__40=40;
 	public static final int AND=4;
 	public static final int COMMA=5;
 	public static final int DATA=6;
 	public static final int DIV=7;
-	public static final int Digit=8;
-	public static final int EQUALS=9;
-	public static final int EXPRESSION=10;
-	public static final int FIELD=11;
-	public static final int FUNCTION=12;
-	public static final int GT=13;
-	public static final int GTEQ=14;
-	public static final int IDENTIFIER=15;
-	public static final int INDEX=16;
-	public static final int LBRACKET=17;
-	public static final int LETTER=18;
-	public static final int LPAREN=19;
-	public static final int LT=20;
-	public static final int LTEQ=21;
-	public static final int MEMBERACCESS=22;
-	public static final int MINUS=23;
-	public static final int MUL=24;
-	public static final int NOT=25;
-	public static final int NOTEQUALS=26;
-	public static final int OR=27;
-	public static final int PLUS=28;
-	public static final int POW=29;
-	public static final int RBRACKET=30;
-	public static final int RPAREN=31;
-	public static final int TYPE_BOOLEAN=32;
-	public static final int TYPE_DATETIME=33;
-	public static final int TYPE_DOUBLE=34;
-	public static final int TYPE_INTEGER=35;
-	public static final int TYPE_STRING=36;
-	public static final int UNARY=37;
-	public static final int WS=38;
-	public static final int ZERO=39;
+	public static final int DOT=8;
+	public static final int Digit=9;
+	public static final int EQUALS=10;
+	public static final int EXPRESSION=11;
+	public static final int FIELD=12;
+	public static final int FUNCTION=13;
+	public static final int GT=14;
+	public static final int GTEQ=15;
+	public static final int IDENTIFIER=16;
+	public static final int INDEX=17;
+	public static final int LBRACKET=18;
+	public static final int LETTER=19;
+	public static final int LPAREN=20;
+	public static final int LT=21;
+	public static final int LTEQ=22;
+	public static final int MEMBERACCESS=23;
+	public static final int MINUS=24;
+	public static final int MUL=25;
+	public static final int NOT=26;
+	public static final int NOTEQUALS=27;
+	public static final int OR=28;
+	public static final int PLUS=29;
+	public static final int POW=30;
+	public static final int RBRACKET=31;
+	public static final int RPAREN=32;
+	public static final int TYPE_BOOLEAN=33;
+	public static final int TYPE_DATETIME=34;
+	public static final int TYPE_DOUBLE=35;
+	public static final int TYPE_INTEGER=36;
+	public static final int TYPE_STRING=37;
+	public static final int UNARY=38;
+	public static final int WS=39;
+	public static final int ZERO=40;
 
 	// delegates
 	// delegators
@@ -61,34 +59,14 @@ public class ExpressionLexer extends Lexer {
 	public ExpressionLexer(CharStream input, RecognizerSharedState state) {
 		super(input,state);
 	}
-	@Override public String getGrammarFileName() { return "Expression.g"; }
-
-	// $ANTLR start "T__40"
-	public final void mT__40() throws RecognitionException {
-		try {
-			int _type = T__40;
-			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:9:7: ( '.' )
-			// Expression.g:9:9: '.'
-			{
-			match('.'); 
-			}
-
-			state.type = _type;
-			state.channel = _channel;
-		}
-		finally {
-			// do for sure before leaving
-		}
-	}
-	// $ANTLR end "T__40"
+	@Override public String getGrammarFileName() { return "D:\\antlr\\Expression.g"; }
 
 	// $ANTLR start "AND"
 	public final void mAND() throws RecognitionException {
 		try {
 			int _type = AND;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:126:2: ( ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' ) | '&&' )
+			// D:\\antlr\\Expression.g:139:3: ( ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' ) | '&&' )
 			int alt1=2;
 			int LA1_0 = input.LA(1);
 			if ( (LA1_0=='A'||LA1_0=='a') ) {
@@ -106,7 +84,7 @@ public class ExpressionLexer extends Lexer {
 
 			switch (alt1) {
 				case 1 :
-					// Expression.g:126:4: ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' )
+					// D:\\antlr\\Expression.g:139:5: ( 'a' | 'A' ) ( 'n' | 'N' ) ( 'd' | 'D' )
 					{
 					if ( input.LA(1)=='A'||input.LA(1)=='a' ) {
 						input.consume();
@@ -135,7 +113,7 @@ public class ExpressionLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Expression.g:126:36: '&&'
+					// D:\\antlr\\Expression.g:139:37: '&&'
 					{
 					match("&&"); 
 
@@ -157,7 +135,7 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = OR;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:130:2: ( ( 'o' | 'O' ) ( 'r' | 'R' ) | '||' )
+			// D:\\antlr\\Expression.g:143:3: ( ( 'o' | 'O' ) ( 'r' | 'R' ) | '||' )
 			int alt2=2;
 			int LA2_0 = input.LA(1);
 			if ( (LA2_0=='O'||LA2_0=='o') ) {
@@ -175,7 +153,7 @@ public class ExpressionLexer extends Lexer {
 
 			switch (alt2) {
 				case 1 :
-					// Expression.g:130:5: ( 'o' | 'O' ) ( 'r' | 'R' )
+					// D:\\antlr\\Expression.g:143:7: ( 'o' | 'O' ) ( 'r' | 'R' )
 					{
 					if ( input.LA(1)=='O'||input.LA(1)=='o' ) {
 						input.consume();
@@ -196,7 +174,7 @@ public class ExpressionLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Expression.g:130:26: '||'
+					// D:\\antlr\\Expression.g:143:28: '||'
 					{
 					match("||"); 
 
@@ -218,7 +196,7 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = NOT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:134:2: ( ( 'n' | 'N' ) ( 'o' | 'O' ) ( 't' | 'T' ) | '!' )
+			// D:\\antlr\\Expression.g:147:3: ( ( 'n' | 'N' ) ( 'o' | 'O' ) ( 't' | 'T' ) | '!' )
 			int alt3=2;
 			int LA3_0 = input.LA(1);
 			if ( (LA3_0=='N'||LA3_0=='n') ) {
@@ -236,7 +214,7 @@ public class ExpressionLexer extends Lexer {
 
 			switch (alt3) {
 				case 1 :
-					// Expression.g:134:5: ( 'n' | 'N' ) ( 'o' | 'O' ) ( 't' | 'T' )
+					// D:\\antlr\\Expression.g:147:7: ( 'n' | 'N' ) ( 'o' | 'O' ) ( 't' | 'T' )
 					{
 					if ( input.LA(1)=='N'||input.LA(1)=='n' ) {
 						input.consume();
@@ -265,7 +243,7 @@ public class ExpressionLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Expression.g:134:35: '!'
+					// D:\\antlr\\Expression.g:147:37: '!'
 					{
 					match('!'); 
 					}
@@ -286,8 +264,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = COMMA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:138:2: ( ',' )
-			// Expression.g:138:5: ','
+			// D:\\antlr\\Expression.g:151:3: ( ',' )
+			// D:\\antlr\\Expression.g:151:7: ','
 			{
 			match(','); 
 			}
@@ -301,13 +279,33 @@ public class ExpressionLexer extends Lexer {
 	}
 	// $ANTLR end "COMMA"
 
+	// $ANTLR start "DOT"
+	public final void mDOT() throws RecognitionException {
+		try {
+			int _type = DOT;
+			int _channel = DEFAULT_TOKEN_CHANNEL;
+			// D:\\antlr\\Expression.g:155:3: ( '.' )
+			// D:\\antlr\\Expression.g:155:5: '.'
+			{
+			match('.'); 
+			}
+
+			state.type = _type;
+			state.channel = _channel;
+		}
+		finally {
+			// do for sure before leaving
+		}
+	}
+	// $ANTLR end "DOT"
+
 	// $ANTLR start "PLUS"
 	public final void mPLUS() throws RecognitionException {
 		try {
 			int _type = PLUS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:142:2: ( '+' )
-			// Expression.g:142:5: '+'
+			// D:\\antlr\\Expression.g:159:3: ( '+' )
+			// D:\\antlr\\Expression.g:159:7: '+'
 			{
 			match('+'); 
 			}
@@ -326,8 +324,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = MINUS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:146:2: ( '-' )
-			// Expression.g:146:5: '-'
+			// D:\\antlr\\Expression.g:163:3: ( '-' )
+			// D:\\antlr\\Expression.g:163:7: '-'
 			{
 			match('-'); 
 			}
@@ -346,8 +344,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = MUL;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:150:2: ( '*' )
-			// Expression.g:150:5: '*'
+			// D:\\antlr\\Expression.g:167:3: ( '*' )
+			// D:\\antlr\\Expression.g:167:7: '*'
 			{
 			match('*'); 
 			}
@@ -366,8 +364,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = DIV;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:154:2: ( '/' )
-			// Expression.g:154:5: '/'
+			// D:\\antlr\\Expression.g:171:3: ( '/' )
+			// D:\\antlr\\Expression.g:171:7: '/'
 			{
 			match('/'); 
 			}
@@ -386,8 +384,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = POW;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:158:2: ( '^' )
-			// Expression.g:158:4: '^'
+			// D:\\antlr\\Expression.g:175:3: ( '^' )
+			// D:\\antlr\\Expression.g:175:5: '^'
 			{
 			match('^'); 
 			}
@@ -406,7 +404,7 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = EQUALS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:165:8: ( '=' | '==' )
+			// D:\\antlr\\Expression.g:182:9: ( '=' | '==' )
 			int alt4=2;
 			int LA4_0 = input.LA(1);
 			if ( (LA4_0=='=') ) {
@@ -429,13 +427,13 @@ public class ExpressionLexer extends Lexer {
 
 			switch (alt4) {
 				case 1 :
-					// Expression.g:165:10: '='
+					// D:\\antlr\\Expression.g:182:11: '='
 					{
 					match('='); 
 					}
 					break;
 				case 2 :
-					// Expression.g:165:16: '=='
+					// D:\\antlr\\Expression.g:182:17: '=='
 					{
 					match("=="); 
 
@@ -457,7 +455,7 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = NOTEQUALS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:168:2: ( '!=' | '<>' )
+			// D:\\antlr\\Expression.g:185:3: ( '!=' | '<>' )
 			int alt5=2;
 			int LA5_0 = input.LA(1);
 			if ( (LA5_0=='!') ) {
@@ -475,14 +473,14 @@ public class ExpressionLexer extends Lexer {
 
 			switch (alt5) {
 				case 1 :
-					// Expression.g:168:4: '!='
+					// D:\\antlr\\Expression.g:185:5: '!='
 					{
 					match("!="); 
 
 					}
 					break;
 				case 2 :
-					// Expression.g:168:11: '<>'
+					// D:\\antlr\\Expression.g:185:12: '<>'
 					{
 					match("<>"); 
 
@@ -504,8 +502,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = LT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:170:4: ( '<' )
-			// Expression.g:170:6: '<'
+			// D:\\antlr\\Expression.g:187:5: ( '<' )
+			// D:\\antlr\\Expression.g:187:7: '<'
 			{
 			match('<'); 
 			}
@@ -524,8 +522,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = LTEQ;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:172:2: ( '<=' )
-			// Expression.g:172:4: '<='
+			// D:\\antlr\\Expression.g:189:3: ( '<=' )
+			// D:\\antlr\\Expression.g:189:5: '<='
 			{
 			match("<="); 
 
@@ -545,8 +543,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = GT;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:174:4: ( '>' )
-			// Expression.g:174:6: '>'
+			// D:\\antlr\\Expression.g:191:5: ( '>' )
+			// D:\\antlr\\Expression.g:191:7: '>'
 			{
 			match('>'); 
 			}
@@ -565,8 +563,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = GTEQ;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:176:2: ( '>=' )
-			// Expression.g:176:4: '>='
+			// D:\\antlr\\Expression.g:193:3: ( '>=' )
+			// D:\\antlr\\Expression.g:193:5: '>='
 			{
 			match(">="); 
 
@@ -586,8 +584,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = LPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:180:2: ( '(' )
-			// Expression.g:180:4: '('
+			// D:\\antlr\\Expression.g:197:3: ( '(' )
+			// D:\\antlr\\Expression.g:197:5: '('
 			{
 			match('('); 
 			}
@@ -606,8 +604,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = RPAREN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:183:8: ( ')' )
-			// Expression.g:183:10: ')'
+			// D:\\antlr\\Expression.g:200:9: ( ')' )
+			// D:\\antlr\\Expression.g:200:11: ')'
 			{
 			match(')'); 
 			}
@@ -626,8 +624,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = LBRACKET;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:187:2: ( '[' )
-			// Expression.g:187:4: '['
+			// D:\\antlr\\Expression.g:204:3: ( '[' )
+			// D:\\antlr\\Expression.g:204:5: '['
 			{
 			match('['); 
 			}
@@ -646,8 +644,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = RBRACKET;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:191:2: ( ']' )
-			// Expression.g:191:4: ']'
+			// D:\\antlr\\Expression.g:208:3: ( ']' )
+			// D:\\antlr\\Expression.g:208:5: ']'
 			{
 			match(']'); 
 			}
@@ -666,11 +664,11 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = TYPE_DATETIME;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:195:2: ( '#' (~ '#' )+ '#' )
-			// Expression.g:195:5: '#' (~ '#' )+ '#'
+			// D:\\antlr\\Expression.g:212:3: ( '#' (~ '#' )+ '#' )
+			// D:\\antlr\\Expression.g:212:7: '#' (~ '#' )+ '#'
 			{
 			match('#'); 
-			// Expression.g:195:9: (~ '#' )+
+			// D:\\antlr\\Expression.g:212:11: (~ '#' )+
 			int cnt6=0;
 			loop6:
 			while (true) {
@@ -682,7 +680,7 @@ public class ExpressionLexer extends Lexer {
 
 				switch (alt6) {
 				case 1 :
-					// Expression.g:
+					// D:\\antlr\\Expression.g:
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '\"')||(input.LA(1) >= '$' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -720,11 +718,11 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = TYPE_STRING;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:199:2: ( '\"' (~ '\"' )* '\"' )
-			// Expression.g:199:4: '\"' (~ '\"' )* '\"'
+			// D:\\antlr\\Expression.g:216:3: ( '\"' (~ '\"' )* '\"' )
+			// D:\\antlr\\Expression.g:216:5: '\"' (~ '\"' )* '\"'
 			{
 			match('\"'); 
-			// Expression.g:199:8: (~ '\"' )*
+			// D:\\antlr\\Expression.g:216:9: (~ '\"' )*
 			loop7:
 			while (true) {
 				int alt7=2;
@@ -735,7 +733,7 @@ public class ExpressionLexer extends Lexer {
 
 				switch (alt7) {
 				case 1 :
-					// Expression.g:
+					// D:\\antlr\\Expression.g:
 					{
 					if ( (input.LA(1) >= '\u0000' && input.LA(1) <= '!')||(input.LA(1) >= '#' && input.LA(1) <= '\uFFFF') ) {
 						input.consume();
@@ -770,7 +768,7 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = TYPE_BOOLEAN;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:203:2: ( ( 't' | 'T' ) ( 'r' | 'R' ) ( 'u' | 'U' ) ( 'e' | 'E' ) | ( 'f' | 'F' ) ( 'a' | 'A' ) ( 'L' | 'l' ) ( 'S' | 's' ) ( 'e' | 'E' ) )
+			// D:\\antlr\\Expression.g:220:3: ( ( 't' | 'T' ) ( 'r' | 'R' ) ( 'u' | 'U' ) ( 'e' | 'E' ) | ( 'f' | 'F' ) ( 'a' | 'A' ) ( 'L' | 'l' ) ( 'S' | 's' ) ( 'e' | 'E' ) )
 			int alt8=2;
 			int LA8_0 = input.LA(1);
 			if ( (LA8_0=='T'||LA8_0=='t') ) {
@@ -788,7 +786,7 @@ public class ExpressionLexer extends Lexer {
 
 			switch (alt8) {
 				case 1 :
-					// Expression.g:203:7: ( 't' | 'T' ) ( 'r' | 'R' ) ( 'u' | 'U' ) ( 'e' | 'E' )
+					// D:\\antlr\\Expression.g:220:8: ( 't' | 'T' ) ( 'r' | 'R' ) ( 'u' | 'U' ) ( 'e' | 'E' )
 					{
 					if ( input.LA(1)=='T'||input.LA(1)=='t' ) {
 						input.consume();
@@ -825,7 +823,7 @@ public class ExpressionLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Expression.g:204:7: ( 'f' | 'F' ) ( 'a' | 'A' ) ( 'L' | 'l' ) ( 'S' | 's' ) ( 'e' | 'E' )
+					// D:\\antlr\\Expression.g:221:8: ( 'f' | 'F' ) ( 'a' | 'A' ) ( 'L' | 'l' ) ( 'S' | 's' ) ( 'e' | 'E' )
 					{
 					if ( input.LA(1)=='F'||input.LA(1)=='f' ) {
 						input.consume();
@@ -885,8 +883,8 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = DATA;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:207:2: ( '$' IDENTIFIER )
-			// Expression.g:207:4: '$' IDENTIFIER
+			// D:\\antlr\\Expression.g:224:3: ( '$' IDENTIFIER )
+			// D:\\antlr\\Expression.g:224:5: '$' IDENTIFIER
 			{
 			match('$'); 
 			mIDENTIFIER(); 
@@ -907,12 +905,12 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = IDENTIFIER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:211:2: ( LETTER ( LETTER | Digit )* )
-			// Expression.g:211:4: LETTER ( LETTER | Digit )*
+			// D:\\antlr\\Expression.g:228:3: ( LETTER ( LETTER | Digit )* )
+			// D:\\antlr\\Expression.g:228:5: LETTER ( LETTER | Digit )*
 			{
 			mLETTER(); 
 
-			// Expression.g:211:11: ( LETTER | Digit )*
+			// D:\\antlr\\Expression.g:228:12: ( LETTER | Digit )*
 			loop9:
 			while (true) {
 				int alt9=2;
@@ -923,7 +921,7 @@ public class ExpressionLexer extends Lexer {
 
 				switch (alt9) {
 				case 1 :
-					// Expression.g:
+					// D:\\antlr\\Expression.g:
 					{
 					if ( (input.LA(1) >= '0' && input.LA(1) <= '9')||(input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 						input.consume();
@@ -957,7 +955,7 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = TYPE_DOUBLE;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:215:2: ( ( Digit )+ '.' ( Digit )* | '.' ( Digit )+ )
+			// D:\\antlr\\Expression.g:232:3: ( ( Digit )+ '.' ( Digit )* | '.' ( Digit )+ )
 			int alt13=2;
 			int LA13_0 = input.LA(1);
 			if ( ((LA13_0 >= '0' && LA13_0 <= '9')) ) {
@@ -975,9 +973,9 @@ public class ExpressionLexer extends Lexer {
 
 			switch (alt13) {
 				case 1 :
-					// Expression.g:215:6: ( Digit )+ '.' ( Digit )*
+					// D:\\antlr\\Expression.g:232:7: ( Digit )+ '.' ( Digit )*
 					{
-					// Expression.g:215:6: ( Digit )+
+					// D:\\antlr\\Expression.g:232:7: ( Digit )+
 					int cnt10=0;
 					loop10:
 					while (true) {
@@ -989,7 +987,7 @@ public class ExpressionLexer extends Lexer {
 
 						switch (alt10) {
 						case 1 :
-							// Expression.g:
+							// D:\\antlr\\Expression.g:
 							{
 							if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
 								input.consume();
@@ -1011,7 +1009,7 @@ public class ExpressionLexer extends Lexer {
 					}
 
 					match('.'); 
-					// Expression.g:215:17: ( Digit )*
+					// D:\\antlr\\Expression.g:232:18: ( Digit )*
 					loop11:
 					while (true) {
 						int alt11=2;
@@ -1022,7 +1020,7 @@ public class ExpressionLexer extends Lexer {
 
 						switch (alt11) {
 						case 1 :
-							// Expression.g:
+							// D:\\antlr\\Expression.g:
 							{
 							if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
 								input.consume();
@@ -1043,10 +1041,10 @@ public class ExpressionLexer extends Lexer {
 					}
 					break;
 				case 2 :
-					// Expression.g:216:6: '.' ( Digit )+
+					// D:\\antlr\\Expression.g:233:7: '.' ( Digit )+
 					{
 					match('.'); 
-					// Expression.g:216:10: ( Digit )+
+					// D:\\antlr\\Expression.g:233:11: ( Digit )+
 					int cnt12=0;
 					loop12:
 					while (true) {
@@ -1058,7 +1056,7 @@ public class ExpressionLexer extends Lexer {
 
 						switch (alt12) {
 						case 1 :
-							// Expression.g:
+							// D:\\antlr\\Expression.g:
 							{
 							if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
 								input.consume();
@@ -1097,10 +1095,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = TYPE_INTEGER;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:220:2: ( ( Digit )+ )
-			// Expression.g:220:5: ( Digit )+
+			// D:\\antlr\\Expression.g:237:3: ( ( Digit )+ )
+			// D:\\antlr\\Expression.g:237:7: ( Digit )+
 			{
-			// Expression.g:220:5: ( Digit )+
+			// D:\\antlr\\Expression.g:237:7: ( Digit )+
 			int cnt14=0;
 			loop14:
 			while (true) {
@@ -1112,7 +1110,7 @@ public class ExpressionLexer extends Lexer {
 
 				switch (alt14) {
 				case 1 :
-					// Expression.g:
+					// D:\\antlr\\Expression.g:
 					{
 					if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
 						input.consume();
@@ -1147,8 +1145,8 @@ public class ExpressionLexer extends Lexer {
 	// $ANTLR start "LETTER"
 	public final void mLETTER() throws RecognitionException {
 		try {
-			// Expression.g:226:2: ( 'A' .. 'Z' | 'a' .. 'z' | '_' )
-			// Expression.g:
+			// D:\\antlr\\Expression.g:243:3: ( 'A' .. 'Z' | 'a' .. 'z' | '_' )
+			// D:\\antlr\\Expression.g:
 			{
 			if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||input.LA(1)=='_'||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
 				input.consume();
@@ -1170,8 +1168,8 @@ public class ExpressionLexer extends Lexer {
 	// $ANTLR start "Digit"
 	public final void mDigit() throws RecognitionException {
 		try {
-			// Expression.g:231:2: ( '0' .. '9' )
-			// Expression.g:
+			// D:\\antlr\\Expression.g:248:3: ( '0' .. '9' )
+			// D:\\antlr\\Expression.g:
 			{
 			if ( (input.LA(1) >= '0' && input.LA(1) <= '9') ) {
 				input.consume();
@@ -1195,10 +1193,10 @@ public class ExpressionLexer extends Lexer {
 		try {
 			int _type = WS;
 			int _channel = DEFAULT_TOKEN_CHANNEL;
-			// Expression.g:235:2: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )+ )
-			// Expression.g:235:5: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )+
+			// D:\\antlr\\Expression.g:252:3: ( ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )+ )
+			// D:\\antlr\\Expression.g:252:6: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )+
 			{
-			// Expression.g:235:5: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )+
+			// D:\\antlr\\Expression.g:252:6: ( ' ' | '\\r' | '\\t' | '\\u000C' | '\\n' )+
 			int cnt15=0;
 			loop15:
 			while (true) {
@@ -1210,7 +1208,7 @@ public class ExpressionLexer extends Lexer {
 
 				switch (alt15) {
 				case 1 :
-					// Expression.g:
+					// D:\\antlr\\Expression.g:
 					{
 					if ( (input.LA(1) >= '\t' && input.LA(1) <= '\n')||(input.LA(1) >= '\f' && input.LA(1) <= '\r')||input.LA(1)==' ' ) {
 						input.consume();
@@ -1245,201 +1243,201 @@ public class ExpressionLexer extends Lexer {
 
 	@Override
 	public void mTokens() throws RecognitionException {
-		// Expression.g:1:8: ( T__40 | AND | OR | NOT | COMMA | PLUS | MINUS | MUL | DIV | POW | EQUALS | NOTEQUALS | LT | LTEQ | GT | GTEQ | LPAREN | RPAREN | LBRACKET | RBRACKET | TYPE_DATETIME | TYPE_STRING | TYPE_BOOLEAN | DATA | IDENTIFIER | TYPE_DOUBLE | TYPE_INTEGER | WS )
+		// D:\\antlr\\Expression.g:1:8: ( AND | OR | NOT | COMMA | DOT | PLUS | MINUS | MUL | DIV | POW | EQUALS | NOTEQUALS | LT | LTEQ | GT | GTEQ | LPAREN | RPAREN | LBRACKET | RBRACKET | TYPE_DATETIME | TYPE_STRING | TYPE_BOOLEAN | DATA | IDENTIFIER | TYPE_DOUBLE | TYPE_INTEGER | WS )
 		int alt16=28;
 		alt16 = dfa16.predict(input);
 		switch (alt16) {
 			case 1 :
-				// Expression.g:1:10: T__40
-				{
-				mT__40(); 
-
-				}
-				break;
-			case 2 :
-				// Expression.g:1:16: AND
+				// D:\\antlr\\Expression.g:1:10: AND
 				{
 				mAND(); 
 
 				}
 				break;
-			case 3 :
-				// Expression.g:1:20: OR
+			case 2 :
+				// D:\\antlr\\Expression.g:1:14: OR
 				{
 				mOR(); 
 
 				}
 				break;
-			case 4 :
-				// Expression.g:1:23: NOT
+			case 3 :
+				// D:\\antlr\\Expression.g:1:17: NOT
 				{
 				mNOT(); 
 
 				}
 				break;
-			case 5 :
-				// Expression.g:1:27: COMMA
+			case 4 :
+				// D:\\antlr\\Expression.g:1:21: COMMA
 				{
 				mCOMMA(); 
 
 				}
 				break;
+			case 5 :
+				// D:\\antlr\\Expression.g:1:27: DOT
+				{
+				mDOT(); 
+
+				}
+				break;
 			case 6 :
-				// Expression.g:1:33: PLUS
+				// D:\\antlr\\Expression.g:1:31: PLUS
 				{
 				mPLUS(); 
 
 				}
 				break;
 			case 7 :
-				// Expression.g:1:38: MINUS
+				// D:\\antlr\\Expression.g:1:36: MINUS
 				{
 				mMINUS(); 
 
 				}
 				break;
 			case 8 :
-				// Expression.g:1:44: MUL
+				// D:\\antlr\\Expression.g:1:42: MUL
 				{
 				mMUL(); 
 
 				}
 				break;
 			case 9 :
-				// Expression.g:1:48: DIV
+				// D:\\antlr\\Expression.g:1:46: DIV
 				{
 				mDIV(); 
 
 				}
 				break;
 			case 10 :
-				// Expression.g:1:52: POW
+				// D:\\antlr\\Expression.g:1:50: POW
 				{
 				mPOW(); 
 
 				}
 				break;
 			case 11 :
-				// Expression.g:1:56: EQUALS
+				// D:\\antlr\\Expression.g:1:54: EQUALS
 				{
 				mEQUALS(); 
 
 				}
 				break;
 			case 12 :
-				// Expression.g:1:63: NOTEQUALS
+				// D:\\antlr\\Expression.g:1:61: NOTEQUALS
 				{
 				mNOTEQUALS(); 
 
 				}
 				break;
 			case 13 :
-				// Expression.g:1:73: LT
+				// D:\\antlr\\Expression.g:1:71: LT
 				{
 				mLT(); 
 
 				}
 				break;
 			case 14 :
-				// Expression.g:1:76: LTEQ
+				// D:\\antlr\\Expression.g:1:74: LTEQ
 				{
 				mLTEQ(); 
 
 				}
 				break;
 			case 15 :
-				// Expression.g:1:81: GT
+				// D:\\antlr\\Expression.g:1:79: GT
 				{
 				mGT(); 
 
 				}
 				break;
 			case 16 :
-				// Expression.g:1:84: GTEQ
+				// D:\\antlr\\Expression.g:1:82: GTEQ
 				{
 				mGTEQ(); 
 
 				}
 				break;
 			case 17 :
-				// Expression.g:1:89: LPAREN
+				// D:\\antlr\\Expression.g:1:87: LPAREN
 				{
 				mLPAREN(); 
 
 				}
 				break;
 			case 18 :
-				// Expression.g:1:96: RPAREN
+				// D:\\antlr\\Expression.g:1:94: RPAREN
 				{
 				mRPAREN(); 
 
 				}
 				break;
 			case 19 :
-				// Expression.g:1:103: LBRACKET
+				// D:\\antlr\\Expression.g:1:101: LBRACKET
 				{
 				mLBRACKET(); 
 
 				}
 				break;
 			case 20 :
-				// Expression.g:1:112: RBRACKET
+				// D:\\antlr\\Expression.g:1:110: RBRACKET
 				{
 				mRBRACKET(); 
 
 				}
 				break;
 			case 21 :
-				// Expression.g:1:121: TYPE_DATETIME
+				// D:\\antlr\\Expression.g:1:119: TYPE_DATETIME
 				{
 				mTYPE_DATETIME(); 
 
 				}
 				break;
 			case 22 :
-				// Expression.g:1:135: TYPE_STRING
+				// D:\\antlr\\Expression.g:1:133: TYPE_STRING
 				{
 				mTYPE_STRING(); 
 
 				}
 				break;
 			case 23 :
-				// Expression.g:1:147: TYPE_BOOLEAN
+				// D:\\antlr\\Expression.g:1:145: TYPE_BOOLEAN
 				{
 				mTYPE_BOOLEAN(); 
 
 				}
 				break;
 			case 24 :
-				// Expression.g:1:160: DATA
+				// D:\\antlr\\Expression.g:1:158: DATA
 				{
 				mDATA(); 
 
 				}
 				break;
 			case 25 :
-				// Expression.g:1:165: IDENTIFIER
+				// D:\\antlr\\Expression.g:1:163: IDENTIFIER
 				{
 				mIDENTIFIER(); 
 
 				}
 				break;
 			case 26 :
-				// Expression.g:1:176: TYPE_DOUBLE
+				// D:\\antlr\\Expression.g:1:174: TYPE_DOUBLE
 				{
 				mTYPE_DOUBLE(); 
 
 				}
 				break;
 			case 27 :
-				// Expression.g:1:188: TYPE_INTEGER
+				// D:\\antlr\\Expression.g:1:186: TYPE_INTEGER
 				{
 				mTYPE_INTEGER(); 
 
 				}
 				break;
 			case 28 :
-				// Expression.g:1:201: WS
+				// D:\\antlr\\Expression.g:1:199: WS
 				{
 				mWS(); 
 
@@ -1452,46 +1450,47 @@ public class ExpressionLexer extends Lexer {
 
 	protected DFA16 dfa16 = new DFA16(this);
 	static final String DFA16_eotS =
-		"\1\uffff\1\35\1\32\1\uffff\1\32\1\uffff\1\32\1\43\7\uffff\1\45\1\47\6"+
-		"\uffff\2\32\2\uffff\1\52\3\uffff\1\32\1\5\1\32\6\uffff\2\32\1\uffff\1"+
-		"\3\1\43\2\32\1\61\1\32\1\uffff\1\61";
+		"\1\uffff\1\32\1\uffff\1\32\1\uffff\1\32\1\41\1\uffff\1\42\6\uffff\1\45"+
+		"\1\47\6\uffff\2\32\2\uffff\1\52\1\uffff\1\32\1\4\1\32\10\uffff\2\32\1"+
+		"\uffff\1\2\1\41\2\32\1\61\1\32\1\uffff\1\61";
 	static final String DFA16_eofS =
 		"\63\uffff";
 	static final String DFA16_minS =
-		"\1\11\1\60\1\116\1\uffff\1\122\1\uffff\1\117\1\75\7\uffff\2\75\6\uffff"+
-		"\1\122\1\101\2\uffff\1\56\3\uffff\1\104\1\60\1\124\6\uffff\1\125\1\114"+
-		"\1\uffff\2\60\1\105\1\123\1\60\1\105\1\uffff\1\60";
+		"\1\11\1\116\1\uffff\1\122\1\uffff\1\117\1\75\1\uffff\1\60\6\uffff\2\75"+
+		"\6\uffff\1\122\1\101\2\uffff\1\56\1\uffff\1\104\1\60\1\124\10\uffff\1"+
+		"\125\1\114\1\uffff\2\60\1\105\1\123\1\60\1\105\1\uffff\1\60";
 	static final String DFA16_maxS =
-		"\1\174\1\71\1\156\1\uffff\1\162\1\uffff\1\157\1\75\7\uffff\1\76\1\75\6"+
-		"\uffff\1\162\1\141\2\uffff\1\71\3\uffff\1\144\1\172\1\164\6\uffff\1\165"+
-		"\1\154\1\uffff\2\172\1\145\1\163\1\172\1\145\1\uffff\1\172";
+		"\1\174\1\156\1\uffff\1\162\1\uffff\1\157\1\75\1\uffff\1\71\6\uffff\1\76"+
+		"\1\75\6\uffff\1\162\1\141\2\uffff\1\71\1\uffff\1\144\1\172\1\164\10\uffff"+
+		"\1\165\1\154\1\uffff\2\172\1\145\1\163\1\172\1\145\1\uffff\1\172";
 	static final String DFA16_acceptS =
-		"\3\uffff\1\2\1\uffff\1\3\2\uffff\1\5\1\6\1\7\1\10\1\11\1\12\1\13\2\uffff"+
-		"\1\21\1\22\1\23\1\24\1\25\1\26\2\uffff\1\30\1\31\1\uffff\1\34\1\1\1\32"+
-		"\3\uffff\1\14\1\4\1\16\1\15\1\20\1\17\2\uffff\1\33\6\uffff\1\27\1\uffff";
+		"\2\uffff\1\1\1\uffff\1\2\2\uffff\1\4\1\uffff\1\6\1\7\1\10\1\11\1\12\1"+
+		"\13\2\uffff\1\21\1\22\1\23\1\24\1\25\1\26\2\uffff\1\30\1\31\1\uffff\1"+
+		"\34\3\uffff\1\14\1\3\1\5\1\32\1\16\1\15\1\20\1\17\2\uffff\1\33\6\uffff"+
+		"\1\27\1\uffff";
 	static final String DFA16_specialS =
 		"\63\uffff}>";
 	static final String[] DFA16_transitionS = {
-			"\2\34\1\uffff\2\34\22\uffff\1\34\1\7\1\26\1\25\1\31\1\uffff\1\3\1\uffff"+
-			"\1\21\1\22\1\13\1\11\1\10\1\12\1\1\1\14\12\33\2\uffff\1\17\1\16\1\20"+
-			"\2\uffff\1\2\4\32\1\30\7\32\1\6\1\4\4\32\1\27\6\32\1\23\1\uffff\1\24"+
-			"\1\15\1\32\1\uffff\1\2\4\32\1\30\7\32\1\6\1\4\4\32\1\27\6\32\1\uffff"+
-			"\1\5",
-			"\12\36",
+			"\2\34\1\uffff\2\34\22\uffff\1\34\1\6\1\26\1\25\1\31\1\uffff\1\2\1\uffff"+
+			"\1\21\1\22\1\13\1\11\1\7\1\12\1\10\1\14\12\33\2\uffff\1\17\1\16\1\20"+
+			"\2\uffff\1\1\4\32\1\30\7\32\1\5\1\3\4\32\1\27\6\32\1\23\1\uffff\1\24"+
+			"\1\15\1\32\1\uffff\1\1\4\32\1\30\7\32\1\5\1\3\4\32\1\27\6\32\1\uffff"+
+			"\1\4",
+			"\1\35\37\uffff\1\35",
+			"",
+			"\1\36\37\uffff\1\36",
+			"",
 			"\1\37\37\uffff\1\37",
+			"\1\40",
 			"",
-			"\1\40\37\uffff\1\40",
-			"",
-			"\1\41\37\uffff\1\41",
-			"\1\42",
+			"\12\43",
 			"",
 			"",
 			"",
 			"",
 			"",
 			"",
-			"",
-			"\1\44\1\42",
+			"\1\44\1\40",
 			"\1\46",
 			"",
 			"",
@@ -1503,13 +1502,13 @@ public class ExpressionLexer extends Lexer {
 			"\1\51\37\uffff\1\51",
 			"",
 			"",
-			"\1\36\1\uffff\12\33",
-			"",
-			"",
+			"\1\43\1\uffff\12\33",
 			"",
 			"\1\53\37\uffff\1\53",
 			"\12\32\7\uffff\32\32\4\uffff\1\32\1\uffff\32\32",
 			"\1\54\37\uffff\1\54",
+			"",
+			"",
 			"",
 			"",
 			"",
@@ -1560,40 +1559,43 @@ public class ExpressionLexer extends Lexer {
 		}
 		@Override
 		public String getDescription() {
-			return "1:1: Tokens : ( T__40 | AND | OR | NOT | COMMA | PLUS | MINUS | MUL | DIV | POW | EQUALS | NOTEQUALS | LT | LTEQ | GT | GTEQ | LPAREN | RPAREN | LBRACKET | RBRACKET | TYPE_DATETIME | TYPE_STRING | TYPE_BOOLEAN | DATA | IDENTIFIER | TYPE_DOUBLE | TYPE_INTEGER | WS );";
+			return "1:1: Tokens : ( AND | OR | NOT | COMMA | DOT | PLUS | MINUS | MUL | DIV | POW | EQUALS | NOTEQUALS | LT | LTEQ | GT | GTEQ | LPAREN | RPAREN | LBRACKET | RBRACKET | TYPE_DATETIME | TYPE_STRING | TYPE_BOOLEAN | DATA | IDENTIFIER | TYPE_DOUBLE | TYPE_INTEGER | WS );";
 		}
 	}
 
 	 ArrayList exceptions = new ArrayList();
 
-     public Override  ReportError(RecognitionException e)
-     {
-         exceptions.add(e);
+   public Override  ReportError(RecognitionException e)
+   {
+       exceptions.add(e);
 		 return null;
-     }
+   }
 
-     public Override  DisplayRecognitionError(String[] tokenNames, RecognitionException e)
-     {
-         return DisplayRecognitionError(tokenNames, e);
-     }
+   public Override  DisplayRecognitionError(String[] tokenNames, RecognitionException e)
+   {
+       return DisplayRecognitionError(tokenNames, e);
+   }
 
 
-     public Boolean HasError()
-     {
-         return exceptions.size() > 0; 
-     }
+   public Boolean HasError()
+   {
+       return exceptions.size() > 0; 
+   }
 
-     public String GetErrorMessage()
-     {
+   public String GetErrorMessage()
+   {
 
-             StringBuilder sb = new StringBuilder();
-             for (Object m : exceptions)
-             {
-                 RecognitionException t = (RecognitionException) m;
-                 sb.append(String.format("Î»ÖÃ:{0}£¬´íÎó:{1}\r\n", 
-                     this.getErrorHeader(t), 
-                     this.getErrorMessage(t, this.getTokenNames())));
-             }
-             return sb.toString(); 
-     }
+           StringBuilder sb = new StringBuilder();
+           for (Object m : exceptions)
+           {
+               RecognitionException t = (RecognitionException) m;
+               sb.append(String.format("Å’ÂªÃ·âˆš:{0}Â£Â¨Â¥ÃŒÅ’Ã›:{1}\r\n", 
+                   this.getErrorHeader(t), 
+                   this.getErrorMessage(t, this.getTokenNames())));
+           }
+           return sb.toString(); 
+   }
+	
+   
+   
 }
