@@ -54,18 +54,35 @@ public class FunctionExpression extends BaseExpression {
 		else if (funcName.toUpperCase().equals("RIGHT")) {
 			CheckParamCount(funcName, 2);
 			return RIGHT(_tree, data);
+		} else if (funcName.toUpperCase().equals("TRIM")) {
+			CheckParamCount(funcName, 2);
+			return RIGHT(_tree, data);
 		}
 		// ORIGINAL LINE: case "LEN":
 		else if (funcName.toUpperCase().equals("LEN")) {
 			CheckParamCount(funcName, 1);
 			return LEN(_tree, data);
-
 		}
-		// ORIGINAL LINE: case "CONTAIN":
-		else if (funcName.toUpperCase().equals("CONTAIN")) {
-			CheckParamCount(funcName, 2);
-			return CONTAIN(_tree, data);
 
+		else if (funcName.toUpperCase().equals("UPPER")) {
+			CheckParamCount(funcName, 2);
+			return UPPER(_tree, data);
+		} else if (funcName.toUpperCase().equals("LOWER")) {
+			CheckParamCount(funcName, 2);
+			return LOWER(_tree, data);
+		}
+		// ORIGINAL LINE: case "INSTR":
+		else if (funcName.toUpperCase().equals("INSTR")) {
+			CheckParamCount(funcName, 2);
+			return INSTR(_tree, data);
+		}
+		// ORIGINAL LINE: case "LIKE":
+		else if (funcName.toUpperCase().equals("LIKE")) {
+			CheckParamCount(funcName, 2);
+			return LIKE(_tree, data);
+		} else if (funcName.toUpperCase().equals("CHARINDEX")) {
+			CheckParamCount(funcName, 1);
+			return CHARINDEX(_tree, data);
 		}
 		// ORIGINAL LINE: case "INT":
 		else if (funcName.toUpperCase().equals("INT")) // /向下取整
@@ -83,13 +100,20 @@ public class FunctionExpression extends BaseExpression {
 			return Math.sqrt(value);
 
 		}
-		// ORIGINAL LINE: case "WEEKDAY":
+
+		/**
+		 * 计算日期类型 Aardwolf.K
+		 */
+		// ORIGINAL LINE: case "DAYOFWEEK":
 		// FIXME
-		else if (funcName.toUpperCase().equals("WEEKDAY")) {
+		else if (funcName.toUpperCase().equals("DAYOFWEEK")) {
 			CheckParamCount(funcName, 0);
 			Calendar c = Calendar.getInstance();
 			// return (int)Calendar.DAY_OF_WEEK-1; ///周日是0，周六是6
 			return (int) (c.get(Calendar.DAY_OF_WEEK) - 1);
+		} else if (funcName.toUpperCase().equals("DATEDIFF")) {
+			CheckParamCount(funcName, 2);
+			return DATEDIFF(_tree, data);
 		}
 		// ORIGINAL LINE: case "NOW":
 		else if (funcName.toUpperCase().equals("NOW")) {
@@ -142,12 +166,11 @@ public class FunctionExpression extends BaseExpression {
 		} else if (funcName.toUpperCase().equals("ISNULL")) {
 			CheckParamCount(funcName, 1);
 			return (Boolean) (VisitSubTree(_tree.getChild(1), data) == null);
-		} else if(funcName.toUpperCase().equals("EXISTOBJECT")) {
+		} else if (funcName.toUpperCase().equals("EXISTOBJECT")) {
 			return true;
-		} else if (funcName.toUpperCase().equals("GLOBALVAR")){
+		} else if (funcName.toUpperCase().equals("GLOBALVAR")) {
 			return "0";
-		}
-		else {
+		} else {
 			return CallUserFunction(funcName, _tree, data);
 		}
 	}
@@ -328,6 +351,42 @@ public class FunctionExpression extends BaseExpression {
 		return StringUtility.Right(str, length);
 	}
 
+	private Object UPPER(Tree tree, Object data) throws Exception {
+		/**
+		 * Aardwolf.K 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return "";
+		}
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+
+		return str.toUpperCase();
+	}
+
+	private Object LOWER(Tree tree, Object data) throws Exception {
+		/**
+		 * Aardwolf.K 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return "";
+		}
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+
+		return str.toLowerCase();
+	}
+
+	private Object TRIM(Tree tree, Object data) throws Exception {
+		/**
+		 * Aardwolf.K 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return "";
+		}
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+
+		return str.trim();
+	}
+
 	private Object LEN(Tree tree, Object data) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回0
@@ -340,7 +399,7 @@ public class FunctionExpression extends BaseExpression {
 		return str.length();
 	}
 
-	private Object CONTAIN(Tree tree, Object data) throws Exception {
+	private Object INSTR(Tree tree, Object data) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
@@ -355,6 +414,38 @@ public class FunctionExpression extends BaseExpression {
 		String find = String.valueOf(VisitSubTree(tree.getChild(2), data));
 
 		return str.indexOf(find) > -1;
+	}
+
+	private Object LIKE(Tree tree, Object data) throws Exception {
+		/**
+		 * Aardwolf.K 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return false;
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return false;
+		}
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+		String find = String.valueOf(VisitSubTree(tree.getChild(2), data));
+		return str.matches(find);
+	}
+
+	private Object CHARINDEX(Tree tree, Object data) throws Exception {
+		/**
+		 * Aardwolf.K 如果数据库为null，则返回false
+		 */
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return false;
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return false;
+		}
+
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+		String find = String.valueOf(VisitSubTree(tree.getChild(2), data));
+
+		return str.indexOf(find);
 	}
 
 	/**
@@ -392,4 +483,49 @@ public class FunctionExpression extends BaseExpression {
 					funName, minExpectParamCount, actualParamCount));
 		}
 	}
+
+	/**
+	 * 返回两个日期相差的天数
+	 * 
+	 * @param tree
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
+	private Object DATEDIFF(Tree tree, Object data) throws Exception {
+
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return null;
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return null;
+		}
+
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		java.util.Date now = df.parse(String.valueOf(VisitSubTree(
+				tree.getChild(1), data)));
+		java.util.Date date = df.parse(String.valueOf(VisitSubTree(
+				tree.getChild(2), data)));
+		long l = now.getTime() - date.getTime();
+		return l / (24 * 60 * 60 * 1000);
+	}
+	
+	private Object CONTAIN(Tree tree, Object data) throws Exception {
+
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return null;
+		}
+		if (VisitSubTree(tree.getChild(2), data) == null) {
+			return null;
+		}
+
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		java.util.Date now = df.parse(String.valueOf(VisitSubTree(
+				tree.getChild(1), data)));
+		java.util.Date date = df.parse(String.valueOf(VisitSubTree(
+				tree.getChild(2), data)));
+		long l = now.getTime() - date.getTime();
+		return l / (24 * 60 * 60 * 1000);
+	}
+
 }
