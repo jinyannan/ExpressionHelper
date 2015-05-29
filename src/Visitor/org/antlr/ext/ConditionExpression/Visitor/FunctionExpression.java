@@ -1,8 +1,10 @@
 ﻿package org.antlr.ext.ConditionExpression.Visitor;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import org.antlr.ext.ConditionExpression.Utility.Compare;
 import org.antlr.ext.ConditionExpression.Utility.DataType;
@@ -166,10 +168,47 @@ public class FunctionExpression extends BaseExpression {
 		} else if (funcName.toUpperCase().equals("ISNULL")) {
 			CheckParamCount(funcName, 1);
 			return (Boolean) (VisitSubTree(_tree.getChild(1), data) == null);
+		} else if (funcName.equalsIgnoreCase("IsNotNull")) {
+			CheckParamCount(funcName, 1);
+			return (Boolean) (VisitSubTree(_tree.getChild(1), data) != null);
 		} else if (funcName.toUpperCase().equals("EXISTOBJECT")) {
 			return true;
 		} else if (funcName.toUpperCase().equals("GLOBALVAR")) {
 			return "0";
+		}
+		/**
+		 * 集合函数
+		 */
+		else if (funcName.equalsIgnoreCase("filter")) {
+			return filter(_tree, data);
+		} else if (funcName.equalsIgnoreCase("Count")) {
+			return count(_tree, data);
+		} else if (funcName.equalsIgnoreCase("Exist")) {
+			return exist(_tree, data);
+		} else if (funcName.equalsIgnoreCase("Min")) {
+			return min(_tree, data);
+		} else if (funcName.equalsIgnoreCase("Max")) {
+			return max(_tree, data);
+		} else if (funcName.equalsIgnoreCase("Sum")) {
+			return sum(_tree, data);
+		} else if (funcName.equalsIgnoreCase("Avg")) {
+			return avg(_tree, data);
+		} else if (funcName.equalsIgnoreCase("rand")) {
+			return Math.random();
+		} else if (funcName.equalsIgnoreCase("ExistKey")) {
+			return existKey(_tree, data);
+		} else if (funcName.equalsIgnoreCase("IsNull")) {
+			return isNull(_tree, data);
+		} else if (funcName.equalsIgnoreCase("IsNotNull")) {
+			return isNotNull(_tree, data);
+		} else if (funcName.equalsIgnoreCase("GlobalVar")) {
+			return true;
+		} else if (funcName.equalsIgnoreCase("Valid")) {
+			return null;
+		} else if (funcName.equalsIgnoreCase("IsDate")) {
+			return isDate(_tree, data);
+		} else if (funcName.equalsIgnoreCase("ToDate")) {
+			return toDate(_tree, data);
 		} else {
 			return CallUserFunction(funcName, _tree, data);
 		}
@@ -509,7 +548,14 @@ public class FunctionExpression extends BaseExpression {
 		long l = now.getTime() - date.getTime();
 		return l / (24 * 60 * 60 * 1000);
 	}
-	
+
+	/**
+	 * 
+	 * @param tree
+	 * @param data
+	 * @return
+	 * @throws Exception
+	 */
 	private Object CONTAIN(Tree tree, Object data) throws Exception {
 
 		if (VisitSubTree(tree.getChild(1), data) == null) {
@@ -528,4 +574,226 @@ public class FunctionExpression extends BaseExpression {
 		return l / (24 * 60 * 60 * 1000);
 	}
 
+	private Object filter(Tree tree, Object data) throws Exception {
+		ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+				_tree.getChild(1), data);
+		String key = (String) VisitSubTree(_tree.getChild(2), data);
+		String filter = (String) VisitSubTree(_tree.getChild(3), data);
+		HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+		HashMap<String, Object> local = new HashMap<String, Object>();
+		return ExpressionFunctionHelper.filter(collection, key, filter, hpData,
+				local);
+	}
+
+	private Object count(Tree tree, Object data) throws Exception {
+		if (_tree.getChildCount() - 1 == 1) {
+			if (VisitSubTree(tree.getChild(1), data) == null) {
+				return null;
+			}
+			ArrayList collection = (ArrayList) VisitSubTree(
+					_tree.getChild(1), data);
+			return ExpressionFunctionHelper.count(collection);
+		} else {
+			if (VisitSubTree(tree.getChild(1), data) == null
+					|| VisitSubTree(tree.getChild(2), data) == null
+					|| VisitSubTree(tree.getChild(3), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String key = (String) VisitSubTree(_tree.getChild(2), data);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data);
+			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+			HashMap<String, Object> local = new HashMap<String, Object>();
+			return ExpressionFunctionHelper.count(collection, key, filter,
+					hpData, local);
+		}
+	}
+
+	private Object exist(Tree tree, Object data) throws Exception {
+
+		if (VisitSubTree(tree.getChild(1), data) == null
+				|| VisitSubTree(tree.getChild(2), data) == null
+				|| VisitSubTree(tree.getChild(3), data) == null) {
+			return null;
+		}
+		ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+				_tree.getChild(1), data);
+		String key = (String) VisitSubTree(_tree.getChild(2), data);
+		String filter = (String) VisitSubTree(_tree.getChild(3), data);
+		HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+		HashMap<String, Object> local = new HashMap<String, Object>();
+		return ExpressionFunctionHelper.exist(collection, key, filter, hpData,
+				local);
+	}
+	
+	private Object min(Tree tree, Object data) throws Exception {
+
+		if (_tree.getChildCount() - 1 == 2) {
+			if (VisitSubTree(tree.getChild(1), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String field = String.valueOf(VisitSubTree(
+					_tree.getChild(1), data));
+			return ExpressionFunctionHelper.min(collection, field);
+		} else if (_tree.getChildCount() - 1 == 4) {
+			if (VisitSubTree(tree.getChild(1), data) == null
+					|| VisitSubTree(tree.getChild(2), data) == null
+					|| VisitSubTree(tree.getChild(3), data) == null
+					|| VisitSubTree(tree.getChild(4), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String key = (String) VisitSubTree(_tree.getChild(2), data);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data);
+			String field = (String) VisitSubTree(_tree.getChild(4), data);
+			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+			HashMap<String, Object> local = new HashMap<String, Object>();
+			return ExpressionFunctionHelper.min(collection, key, field, filter,
+					hpData, local);
+		}else {
+			return null;
+		}
+	}
+
+	private Object max(Tree tree, Object data) throws Exception {
+
+		if (_tree.getChildCount() - 1 == 2) {
+			if (VisitSubTree(tree.getChild(1), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String field = String.valueOf(VisitSubTree(
+					_tree.getChild(1), data));
+			return ExpressionFunctionHelper.max(collection, field);
+		} else if (_tree.getChildCount() - 1 == 4) {
+			if (VisitSubTree(tree.getChild(1), data) == null
+					|| VisitSubTree(tree.getChild(2), data) == null
+					|| VisitSubTree(tree.getChild(3), data) == null
+					|| VisitSubTree(tree.getChild(4), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String key = (String) VisitSubTree(_tree.getChild(2), data);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data);
+			String field = (String) VisitSubTree(_tree.getChild(4), data);
+			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+			HashMap<String, Object> local = new HashMap<String, Object>();
+			return ExpressionFunctionHelper.max(collection, key, field, filter,
+					hpData, local);
+		}else {
+			return null;
+		}
+	}
+	
+	private Object sum(Tree tree, Object data) throws Exception {
+
+		if (_tree.getChildCount() - 1 == 2) {
+			if (VisitSubTree(tree.getChild(1), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String field = String.valueOf(VisitSubTree(
+					_tree.getChild(1), data));
+			return ExpressionFunctionHelper.sum(collection, field);
+		} else if (_tree.getChildCount() - 1 == 4) {
+			if (VisitSubTree(tree.getChild(1), data) == null
+					|| VisitSubTree(tree.getChild(2), data) == null
+					|| VisitSubTree(tree.getChild(3), data) == null
+					|| VisitSubTree(tree.getChild(4), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String key = (String) VisitSubTree(_tree.getChild(2), data);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data);
+			String field = (String) VisitSubTree(_tree.getChild(4), data);
+			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+			HashMap<String, Object> local = new HashMap<String, Object>();
+			return ExpressionFunctionHelper.sum(collection, key, field, filter,
+					hpData, local);
+		}else {
+			return null;
+		}
+	}
+	
+	private Object avg(Tree tree, Object data) throws Exception {
+
+		if (_tree.getChildCount() - 1 == 2) {
+			if (VisitSubTree(tree.getChild(1), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String field = String.valueOf(VisitSubTree(
+					_tree.getChild(1), data));
+			return ExpressionFunctionHelper.avg(collection, field);
+		} else if (_tree.getChildCount() - 1 == 4) {
+			if (VisitSubTree(tree.getChild(1), data) == null
+					|| VisitSubTree(tree.getChild(2), data) == null
+					|| VisitSubTree(tree.getChild(3), data) == null
+					|| VisitSubTree(tree.getChild(4), data) == null) {
+				return null;
+			}
+			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
+					_tree.getChild(1), data);
+			String key = (String) VisitSubTree(_tree.getChild(2), data);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data);
+			String field = (String) VisitSubTree(_tree.getChild(4), data);
+			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+			HashMap<String, Object> local = new HashMap<String, Object>();
+			return ExpressionFunctionHelper.avg(collection, key, field, filter,
+					hpData, local);
+		}else {
+			return null;
+		}
+	}
+	
+	private Object existKey(Tree tree, Object data) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return null;
+		}
+		String key = (String) VisitSubTree(_tree.getChild(1), data);
+		HashMap<String, Object> hpData = (HashMap<String, Object>) data;
+		HashMap<String, Object> local = new HashMap<String, Object>();
+		return ExpressionFunctionHelper.existKey(key, hpData, local);
+	}
+	
+	private Object isNull(Tree tree, Object data) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return null;
+		}
+		Object obj = (String) VisitSubTree(_tree.getChild(1), data);
+		return ExpressionFunctionHelper.isNull(obj);
+	}
+	
+	private Object isNotNull(Tree tree, Object data) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return null;
+		}
+		Object obj = (String) VisitSubTree(_tree.getChild(1), data);
+		return ExpressionFunctionHelper.isNotNull(obj);
+	}
+	
+	private Object isDate(Tree tree, Object data) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return null;
+		}
+		Object obj = (String) VisitSubTree(_tree.getChild(1), data);
+		return ExpressionFunctionHelper.isDate(obj);
+	}
+	
+	private Object toDate(Tree tree, Object data) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data) == null) {
+			return null;
+		}
+		String str = (String) VisitSubTree(_tree.getChild(1), data);
+		return ExpressionFunctionHelper.toDate(str);
+	}
 }

@@ -11,6 +11,8 @@ import org.antlr.runtime.ParserRuleReturnScope;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
 
+import ExpressionHelper.EntryHelper;
+
 /** 
  
  
@@ -38,6 +40,12 @@ public class Expression
 		_getValueOperation = value;
 	}
 
+	public Expression()
+	{
+		_expressionString = "";
+		_hasCompile = false;
+	}
+	
 	public Expression(String expressionString)
 	{
 		_expressionString = expressionString;
@@ -104,4 +112,27 @@ public class Expression
 		return this.Calculate(data);
 	}
 
+	public final Object ExecuteExpression(String exprCond, Object data) {
+		String result = "";
+		Object m = null;
+		Expression expObj = new Expression(exprCond,
+				(IGetValue) new EntryHelper());
+		try {
+			expObj.Compile();
+			if (data == null) {
+				//data = (Object) ExecRuleHelper.getTestData();
+				result = "";
+			}
+			m = expObj.Calculate(data);
+			if (m == null) {
+				result = "error";
+			} else {
+				result = m.toString();
+			}
+		} catch (Exception e) {
+			result = "error";
+		}
+		return m;
+	}
+	
 }

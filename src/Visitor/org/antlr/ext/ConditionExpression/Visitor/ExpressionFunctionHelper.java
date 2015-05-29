@@ -8,10 +8,7 @@ import java.util.HashMap;
 
 import org.antlr.ext.ConditionExpression.*;
 import org.antlr.ext.ConditionExpression.Utility.*;
-//import ruler.expression.walker.ExpressionDefaultWalker;
-//import ruler.expression.walker.ExpressionWalker;
-//import ruler.rule.exception.ExpressionException;
-//import ruler.rule.exception.ExpressionMismatchTypeException;
+import org.antlr.runtime.tree.Tree;
 
 public class ExpressionFunctionHelper {
 	/**
@@ -48,7 +45,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	public static Object execute(String func_name,Object[] params,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static Object execute(String func_name,Object[] params,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		Object o=null;
 		
@@ -58,7 +55,7 @@ public class ExpressionFunctionHelper {
 			//check params
 			ExpressionFunctionHelper.checkParams("FILTER", params, 3, new Class[]{ArrayList.class,String.class,String.class});
 			//call filter
-			o=ExpressionFunctionHelper.filter((ArrayList)params[0],(String)params[1], (String)params[2], walker, data, local);
+			o=ExpressionFunctionHelper.filter((ArrayList)params[0],(String)params[1], (String)params[2], data, local);
 			return o;
 		}
 		
@@ -78,7 +75,7 @@ public class ExpressionFunctionHelper {
 				//check params
 				ExpressionFunctionHelper.checkParams("Count", params, 3, new Class[]{ArrayList.class,String.class,String.class});
 				//call count
-				o=ExpressionFunctionHelper.count((ArrayList)params[0],(String)params[1], (String)params[2], walker, data, local);
+				o=ExpressionFunctionHelper.count((ArrayList)params[0],(String)params[1], (String)params[2], data, local);
 			}
 			return o;
 		}
@@ -89,7 +86,7 @@ public class ExpressionFunctionHelper {
 			//check params
 			ExpressionFunctionHelper.checkParams("Exist", params, 3, new Class[]{ArrayList.class,String.class,String.class});
 			//call exist
-			o=ExpressionFunctionHelper.exist((ArrayList)params[0],(String)params[1], (String)params[2], walker, data, local);
+			o=ExpressionFunctionHelper.exist((ArrayList)params[0],(String)params[1], (String)params[2], data, local);
 			return o;
 		}
 		
@@ -324,7 +321,7 @@ public class ExpressionFunctionHelper {
 				//check params
 				ExpressionFunctionHelper.checkParams("SUM", params, 4, new Class[]{ArrayList.class,String.class,String.class,String.class});
 				//call
-				o=ExpressionFunctionHelper.sum((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], walker, data, local);
+				o=ExpressionFunctionHelper.sum((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], data, local);
 			}
 			return o;
 		}
@@ -344,7 +341,7 @@ public class ExpressionFunctionHelper {
 				//check params
 				ExpressionFunctionHelper.checkParams("MAX", params, 4, new Class[]{ArrayList.class,String.class,String.class,String.class});
 				//call
-				o=ExpressionFunctionHelper.max((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], walker, data, local);
+				o=ExpressionFunctionHelper.max((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], data, local);
 			}
 			return o;
 		}
@@ -364,7 +361,7 @@ public class ExpressionFunctionHelper {
 				//check params
 				ExpressionFunctionHelper.checkParams("MIN", params, 4, new Class[]{ArrayList.class,String.class,String.class,String.class});
 				//call
-				o=ExpressionFunctionHelper.min((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], walker, data, local);
+				o=ExpressionFunctionHelper.min((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], data, local);
 			}
 			return o;
 		}
@@ -384,7 +381,7 @@ public class ExpressionFunctionHelper {
 				//check params
 				ExpressionFunctionHelper.checkParams("AVG", params, 4, new Class[]{ArrayList.class,String.class,String.class,String.class});
 				//call
-				o=ExpressionFunctionHelper.avg((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], walker, data, local);
+				o=ExpressionFunctionHelper.avg((ArrayList)params[0],(String)params[1], (String)params[2],(String)params[3], data, local);
 			}
 			return o;
 		}	
@@ -447,6 +444,7 @@ public class ExpressionFunctionHelper {
 		
 		//return o;
 	}
+
 	
 	/**
 	 * 
@@ -459,7 +457,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static ArrayList filter(ArrayList collection,String key,String filter,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static ArrayList filter(ArrayList collection,String key,String filter, HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		ArrayList<Object> result=new ArrayList<Object>();
 		//check key exist
@@ -484,7 +482,8 @@ public class ExpressionFunctionHelper {
 			else{
 				//System.out.println(real_filter);
 				//filter="$Person.age>1";
-				value=walker.value(real_filter, data, local);
+				value = new Expression().ExecuteExpression(real_filter, local);
+				//value=walker.value(real_filter, data, local);
 			}
 			
 			if(value instanceof Boolean){
@@ -513,9 +512,9 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static int count(ArrayList collection,String key,String filter,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static int count(ArrayList collection,String key,String filter, HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
-		return ExpressionFunctionHelper.filter(collection, key, filter, walker, data, local).size();
+		return ExpressionFunctionHelper.filter(collection, key, filter , data, local).size();
 	}
 	
 	/**
@@ -524,7 +523,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static int count(ArrayList collection) throws Exception
+	public static int count(ArrayList collection) throws Exception
 	{
 		if(collection==null) return 0;
 		return collection.size();
@@ -541,9 +540,9 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static boolean exist(ArrayList collection,String key,String filter,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static boolean exist(ArrayList collection,String key,String filter ,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
-		return (ExpressionFunctionHelper.filter(collection, key, filter, walker, data, local).size() >0);
+		return (ExpressionFunctionHelper.filter(collection, key, filter, data, local).size() >0);
 	}
 
 	/**
@@ -553,7 +552,7 @@ public class ExpressionFunctionHelper {
 	 * @param local
 	 * @return
 	 */
-	private static boolean existKey(String key,HashMap<String,Object> data,HashMap<String,Object> local)
+	public static boolean existKey(String key,HashMap<String,Object> data,HashMap<String,Object> local)
 	{
 		//test null&""
 		if(key==null) return false;
@@ -575,7 +574,7 @@ public class ExpressionFunctionHelper {
 	 * @param o
 	 * @return
 	 */
-	private static boolean isNull(Object o)
+	public static boolean isNull(Object o)
 	{
 		if(o==null) return true;
 		
@@ -591,7 +590,7 @@ public class ExpressionFunctionHelper {
 	 * @param o
 	 * @return
 	 */
-	private static boolean isNotNull(Object o)
+	public static boolean isNotNull(Object o)
 	{
 		return ExpressionFunctionHelper.isNull(o);
 	}
@@ -740,7 +739,7 @@ public class ExpressionFunctionHelper {
 		
 	}
 	/*********************************DATETIME***************************************************/
-	private static boolean isDate(Object o)
+	public static boolean isDate(Object o)
 	{
 		if(o==null) return false;
 		
@@ -767,7 +766,7 @@ public class ExpressionFunctionHelper {
 	 * @param str
 	 * @return
 	 */
-	private static Date toDate(String str) throws Exception
+	public static Date toDate(String str) throws Exception
 	{
 		
 		Date date=null;
@@ -956,7 +955,7 @@ public class ExpressionFunctionHelper {
 	 * @return:boolean value>=min && value<=max
 	 * @throws Exception
 	 */
-	private static boolean Bt(Object value,Object min,Object max) throws Exception
+	public static boolean Bt(Object value,Object min,Object max) throws Exception
 	{
 		if(value instanceof Date){
 			Date real1,real2;
@@ -1034,7 +1033,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object sum(ArrayList col,String field) throws Exception
+	public static Object sum(ArrayList col,String field) throws Exception
 	{
 		Object result=null;
 		
@@ -1080,10 +1079,10 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object sum(ArrayList collection,String key,String filter,String field,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static Object sum(ArrayList collection,String key,String filter,String field,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		//call filter
-		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, walker, data, local);
+		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, data, local);
 		//return
 		return ExpressionFunctionHelper.sum(list, field);
 				
@@ -1097,7 +1096,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object max(ArrayList col,String field) throws Exception
+	public static Object max(ArrayList col,String field) throws Exception
 	{
 		Object result=null;
 		
@@ -1142,10 +1141,10 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object max(ArrayList collection,String key,String filter,String field,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static Object max(ArrayList collection,String key,String filter,String field,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		//call filter
-		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, walker, data, local);
+		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, data, local);
 		//return
 		return ExpressionFunctionHelper.max(list, field);
 				
@@ -1158,7 +1157,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object min(ArrayList col,String field) throws Exception
+	public static Object min(ArrayList col,String field) throws Exception
 	{
 		Object result=null;
 		
@@ -1203,10 +1202,10 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object min(ArrayList collection,String key,String filter,String field,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static Object min(ArrayList collection,String key,String filter,String field,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		//call filter
-		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, walker, data, local);
+		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, data, local);
 		//return
 		return ExpressionFunctionHelper.min(list, field);
 				
@@ -1219,7 +1218,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object avg(ArrayList col,String field) throws Exception
+	public static Object avg(ArrayList col,String field) throws Exception
 	{
 		Object result=ExpressionFunctionHelper.sum(col, field);
 		//sum function ensure result type in (Integer/Double);
@@ -1249,10 +1248,10 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
-	private static Object avg(ArrayList collection,String key,String filter,String field,ExpressionWalker walker,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
+	public static Object avg(ArrayList collection,String key,String filter,String field,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		//call filter
-		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, walker, data, local);
+		ArrayList list=ExpressionFunctionHelper.filter(collection, key, filter, data, local);
 		//return
 		return ExpressionFunctionHelper.avg(list, field);
 				
@@ -1282,7 +1281,7 @@ public class ExpressionFunctionHelper {
 	 * @param col
 	 * @return
 	 */
-	private static boolean contains(Object o,Object[] col)
+	public static boolean contains(Object o,Object[] col)
 	{
 		if(col==null) return false;
 		
