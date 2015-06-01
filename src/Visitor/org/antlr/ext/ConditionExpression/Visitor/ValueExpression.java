@@ -11,7 +11,7 @@ public class ValueExpression extends BaseExpression
 	}
 
 	@Override
-	public Object Evaluate(Object data)
+	public Object Evaluate(Object data, Object local)
 	{
 		String text = _tree.getText();
 		
@@ -49,5 +49,10 @@ public class ValueExpression extends BaseExpression
 				throw GetTreeException(String.format("无法识别的操作符[%1$s]", _tree.getType()));
 		}
 
+	}
+
+	@Override
+	public Object Evaluate(Object data) throws Exception {
+		return Evaluate(data, null);
 	}
 }

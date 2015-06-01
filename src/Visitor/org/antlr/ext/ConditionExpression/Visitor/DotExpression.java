@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 //import FunctionInfo;
 
 
+
 import org.antlr.ext.ConditionExpression.Generated.ExpressionLexer;
 import org.antlr.runtime.tree.Tree;
 
@@ -15,11 +16,11 @@ public class DotExpression extends BaseExpression {
 	}
 
 	@Override
-	public Object Evaluate(Object data) throws Exception {
+	public Object Evaluate(Object data, Object local) throws Exception {
 		Tree left = _tree.getChild(0);
 		Tree right = _tree.getChild(1);
-		Object leftResult = super.VisitSubTree(left, data);
-		Object rightResult = super.VisitSubTree(right, data);
+		Object leftResult = super.VisitSubTree(left, data, local);
+		Object rightResult = super.VisitSubTree(right, data, local);
 
 		// 孙岩峰增加处理dot方法
 		if (rightResult instanceof FunctionInfo) {
@@ -97,6 +98,11 @@ public class DotExpression extends BaseExpression {
 			result += toUpperCaseFirstOne(strs[i]);
 		}
 		return result;
+	}
+
+	@Override
+	public Object Evaluate(Object data) throws Exception {
+		return Evaluate(data, null);
 	}
 
 }

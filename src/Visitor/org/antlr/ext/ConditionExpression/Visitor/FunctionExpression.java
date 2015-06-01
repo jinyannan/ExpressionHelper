@@ -6,11 +6,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
+import org.antlr.codegen.ObjCTarget;
 import org.antlr.ext.ConditionExpression.Utility.Compare;
 import org.antlr.ext.ConditionExpression.Utility.DataType;
 import org.antlr.runtime.tree.Tree;
 import org.antlr.ext.ConditionExpression.Utility.StringUtility;
 import org.antlr.grammar.v3.ANTLRParser.range_return;
+
+import com.sun.xml.internal.bind.v2.schemagen.xmlschema.LocalAttribute;
 
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -20,7 +23,7 @@ public class FunctionExpression extends BaseExpression {
 	}
 
 	@Override
-	public Object Evaluate(Object data) throws Exception {
+	public Object Evaluate(Object data, Object local) throws Exception {
 		double value;
 		String funcName = _tree.getChild(0).toString();
 		// C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a
@@ -29,75 +32,75 @@ public class FunctionExpression extends BaseExpression {
 		// ORIGINAL LINE: case "BT":
 		if (funcName.toUpperCase().equals("BT")) {
 			CheckMinParamCount(funcName, 2);
-			return BT(_tree, data);
+			return BT(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "IN":
 		else if (funcName.toUpperCase().equals("IN")) {
 			CheckMinParamCount(funcName, 2);
-			return IN(_tree, data);
+			return IN(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "IIF":
 		else if (funcName.toUpperCase().equals("IIF")) {
 			CheckParamCount(funcName, 3);
-			return IIF(_tree, data);
+			return IIF(_tree, data, local);
 
 		}
 		// ORIGINAL LINE: case "MID":
 		else if (funcName.toUpperCase().equals("MID")) {
 			CheckParamCount(funcName, 3);
-			return MID(_tree, data);
+			return MID(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "LEFT":
 		else if (funcName.toUpperCase().equals("LEFT")) {
 			CheckParamCount(funcName, 2);
-			return LEFT(_tree, data);
+			return LEFT(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "RIGHT":
 		else if (funcName.toUpperCase().equals("RIGHT")) {
 			CheckParamCount(funcName, 2);
-			return RIGHT(_tree, data);
+			return RIGHT(_tree, data, local);
 		} else if (funcName.toUpperCase().equals("TRIM")) {
 			CheckParamCount(funcName, 2);
-			return RIGHT(_tree, data);
+			return RIGHT(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "LEN":
 		else if (funcName.toUpperCase().equals("LEN")) {
 			CheckParamCount(funcName, 1);
-			return LEN(_tree, data);
+			return LEN(_tree, data, local);
 		}
 
 		else if (funcName.toUpperCase().equals("UPPER")) {
 			CheckParamCount(funcName, 2);
-			return UPPER(_tree, data);
+			return UPPER(_tree, data, local);
 		} else if (funcName.toUpperCase().equals("LOWER")) {
 			CheckParamCount(funcName, 2);
-			return LOWER(_tree, data);
+			return LOWER(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "INSTR":
 		else if (funcName.toUpperCase().equals("INSTR")) {
 			CheckParamCount(funcName, 2);
-			return INSTR(_tree, data);
+			return INSTR(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "LIKE":
 		else if (funcName.toUpperCase().equals("LIKE")) {
 			CheckParamCount(funcName, 2);
-			return LIKE(_tree, data);
+			return LIKE(_tree, data, local);
 		} else if (funcName.toUpperCase().equals("CHARINDEX")) {
 			CheckParamCount(funcName, 1);
-			return CHARINDEX(_tree, data);
+			return CHARINDEX(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "INT":
 		else if (funcName.toUpperCase().equals("INT")) // /向下取整
 		{
 			CheckParamCount(funcName, 1);
-			value = Double.parseDouble(VisitSubTree(_tree.getChild(1), data)
+			value = Double.parseDouble(VisitSubTree(_tree.getChild(1), data, local)
 					.toString());
 			return (int) Math.floor(value);
 		}
 		// ORIGINAL LINE: case "SQRT":
 		else if (funcName.toUpperCase().equals("SQRT")) {
 			CheckParamCount(funcName, 1);
-			value = Double.parseDouble(VisitSubTree(_tree.getChild(1), data)
+			value = Double.parseDouble(VisitSubTree(_tree.getChild(1), data, local)
 					.toString());
 			return Math.sqrt(value);
 
@@ -115,7 +118,7 @@ public class FunctionExpression extends BaseExpression {
 			return (int) (c.get(Calendar.DAY_OF_WEEK) - 1);
 		} else if (funcName.toUpperCase().equals("DATEDIFF")) {
 			CheckParamCount(funcName, 2);
-			return DATEDIFF(_tree, data);
+			return DATEDIFF(_tree, data, local);
 		}
 		// ORIGINAL LINE: case "NOW":
 		else if (funcName.toUpperCase().equals("NOW")) {
@@ -167,10 +170,10 @@ public class FunctionExpression extends BaseExpression {
 			return ca.get(Calendar.DATE);
 		} else if (funcName.toUpperCase().equals("ISNULL")) {
 			CheckParamCount(funcName, 1);
-			return (Boolean) (VisitSubTree(_tree.getChild(1), data) == null);
+			return (Boolean) (VisitSubTree(_tree.getChild(1), data, local) == null);
 		} else if (funcName.equalsIgnoreCase("IsNotNull")) {
 			CheckParamCount(funcName, 1);
-			return (Boolean) (VisitSubTree(_tree.getChild(1), data) != null);
+			return (Boolean) (VisitSubTree(_tree.getChild(1), data, local) != null);
 		} else if (funcName.toUpperCase().equals("EXISTOBJECT")) {
 			return true;
 		} else if (funcName.toUpperCase().equals("GLOBALVAR")) {
@@ -180,45 +183,45 @@ public class FunctionExpression extends BaseExpression {
 		 * 集合函数
 		 */
 		else if (funcName.equalsIgnoreCase("filter")) {
-			return filter(_tree, data);
+			return filter(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("Count")) {
-			return count(_tree, data);
+			return count(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("Exist")) {
-			return exist(_tree, data);
+			return exist(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("Min")) {
-			return min(_tree, data);
+			return min(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("Max")) {
-			return max(_tree, data);
+			return max(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("Sum")) {
-			return sum(_tree, data);
+			return sum(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("Avg")) {
-			return avg(_tree, data);
+			return avg(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("rand")) {
 			return Math.random();
 		} else if (funcName.equalsIgnoreCase("ExistKey")) {
-			return existKey(_tree, data);
+			return existKey(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("IsNull")) {
-			return isNull(_tree, data);
+			return isNull(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("IsNotNull")) {
-			return isNotNull(_tree, data);
+			return isNotNull(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("GlobalVar")) {
 			return true;
 		} else if (funcName.equalsIgnoreCase("Valid")) {
 			return null;
 		} else if (funcName.equalsIgnoreCase("IsDate")) {
-			return isDate(_tree, data);
+			return isDate(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("ToDate")) {
-			return toDate(_tree, data);
+			return toDate(_tree, data, local);
 		} else {
-			return CallUserFunction(funcName, _tree, data);
+			return CallUserFunction(funcName, _tree, data, local);
 		}
 	}
 
-	private Object CallUserFunction(String funcName, Tree tree, Object data)
+	private Object CallUserFunction(String funcName, Tree tree, Object data, Object local)
 			throws Exception {
 		java.util.ArrayList<Object> funParams = new java.util.ArrayList<Object>();
 		for (int i = 1; i < tree.getChildCount(); i++) {
-			funParams.add(VisitSubTree(tree.getChild(i), data));
+			funParams.add(VisitSubTree(tree.getChild(i), data, local));
 		}
 
 		if (this.getUserFunction() != null) {
@@ -265,24 +268,24 @@ public class FunctionExpression extends BaseExpression {
 	 * @return
 	 * @throws Exception
 	 */
-	private Object BT(Tree tree, Object data) throws Exception {
+	private Object BT(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return false;
 		}
 
-		Object value = VisitSubTree(tree.getChild(1), data);
+		Object value = VisitSubTree(tree.getChild(1), data, local);
 
 		for (int i = 2; i < tree.getChildCount(); i += 2) {
 			if (Compare.IsGreaterOrEqual(value,
-					VisitSubTree(tree.getChild(i), data))) {
+					VisitSubTree(tree.getChild(i), data, local))) {
 				if (i + 1 >= tree.getChildCount()) // /如果只有小值，那待比较值比小值大就返回true
 				{
 					return true;
 				} else if (Compare.IsLessOrEqual(value,
-						VisitSubTree(tree.getChild(i + 1), data))) {
+						VisitSubTree(tree.getChild(i + 1), data, local))) {
 					return true; // /落到了某个区间，可以退出了
 				}
 			}
@@ -300,13 +303,13 @@ public class FunctionExpression extends BaseExpression {
 	 * @return
 	 * @throws Exception
 	 */
-	private Object IN(Tree tree, Object data) throws Exception {
-		Object value = VisitSubTree(tree.getChild(1), data);
+	private Object IN(Tree tree, Object data, Object local) throws Exception {
+		Object value = VisitSubTree(tree.getChild(1), data, local);
 		for (int i = 2; i < tree.getChildCount(); i++) {
 			/**
 			 * 碰到第一个相等的就退出
 			 */
-			if (Compare.AreEqual(value, VisitSubTree(tree.getChild(i), data))) {
+			if (Compare.AreEqual(value, VisitSubTree(tree.getChild(i), data, local))) {
 				return true;
 			}
 		}
@@ -319,35 +322,35 @@ public class FunctionExpression extends BaseExpression {
 	 * @return
 	 * @throws Exception
 	 */
-	private Object IIF(Tree tree, Object data) throws Exception {
+	private Object IIF(Tree tree, Object data, Object local) throws Exception {
 		boolean condition = Boolean.parseBoolean(VisitSubTree(tree.getChild(1),
-				data).toString());
+				data, local).toString());
 		if (condition) {
-			return VisitSubTree(tree.getChild(2), data);
+			return VisitSubTree(tree.getChild(2), data, local);
 		} else {
-			return VisitSubTree(tree.getChild(3), data);
+			return VisitSubTree(tree.getChild(3), data, local);
 		}
 	}
 
-	private Object MID(Tree tree, Object data) throws NumberFormatException,
+	private Object MID(Tree tree, Object data, Object local) throws NumberFormatException,
 			Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return "";
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return "";
 		}
-		if (VisitSubTree(tree.getChild(3), data) == null) {
+		if (VisitSubTree(tree.getChild(3), data, local) == null) {
 			return "";
 		}
 
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
-		int from = Integer.parseInt(VisitSubTree(tree.getChild(2), data)
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
+		int from = Integer.parseInt(VisitSubTree(tree.getChild(2), data, local)
 				.toString());
-		int length = Integer.parseInt(VisitSubTree(tree.getChild(3), data)
+		int length = Integer.parseInt(VisitSubTree(tree.getChild(3), data, local)
 				.toString());
 
 		/**
@@ -356,133 +359,133 @@ public class FunctionExpression extends BaseExpression {
 		return StringUtility.Mid(str, from, length);
 	}
 
-	private Object LEFT(Tree tree, Object data) throws Exception {
+	private Object LEFT(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return "";
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return "";
 		}
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
-		int length = Integer.parseInt(VisitSubTree(tree.getChild(2), data)
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
+		int length = Integer.parseInt(VisitSubTree(tree.getChild(2), data, local)
 				.toString());
 		// StringUtility.Mid(str, from, length);
 		return StringUtility.Left(str, length);
 	}
 
-	private Object RIGHT(Tree tree, Object data) throws Exception {
+	private Object RIGHT(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return "";
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return "";
 		}
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
-		int length = Integer.parseInt(VisitSubTree(tree.getChild(2), data)
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
+		int length = Integer.parseInt(VisitSubTree(tree.getChild(2), data, local)
 				.toString());
 
 		return StringUtility.Right(str, length);
 	}
 
-	private Object UPPER(Tree tree, Object data) throws Exception {
+	private Object UPPER(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return "";
 		}
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
 
 		return str.toUpperCase();
 	}
 
-	private Object LOWER(Tree tree, Object data) throws Exception {
+	private Object LOWER(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return "";
 		}
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
 
 		return str.toLowerCase();
 	}
 
-	private Object TRIM(Tree tree, Object data) throws Exception {
+	private Object TRIM(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return "";
 		}
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
 
 		return str.trim();
 	}
 
-	private Object LEN(Tree tree, Object data) throws Exception {
+	private Object LEN(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回0
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return 0;
 		}
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data)
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local)
 				.toString());
 		return str.length();
 	}
 
-	private Object INSTR(Tree tree, Object data) throws Exception {
+	private Object INSTR(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return false;
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return false;
 		}
 
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
-		String find = String.valueOf(VisitSubTree(tree.getChild(2), data));
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
+		String find = String.valueOf(VisitSubTree(tree.getChild(2), data, local));
 
 		return str.indexOf(find) > -1;
 	}
 
-	private Object LIKE(Tree tree, Object data) throws Exception {
+	private Object LIKE(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return false;
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return false;
 		}
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
-		String find = String.valueOf(VisitSubTree(tree.getChild(2), data));
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
+		String find = String.valueOf(VisitSubTree(tree.getChild(2), data, local));
 		return str.matches(find);
 	}
 
-	private Object CHARINDEX(Tree tree, Object data) throws Exception {
+	private Object CHARINDEX(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
 		 */
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return false;
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return false;
 		}
 
-		String str = String.valueOf(VisitSubTree(tree.getChild(1), data));
-		String find = String.valueOf(VisitSubTree(tree.getChild(2), data));
+		String str = String.valueOf(VisitSubTree(tree.getChild(1), data, local));
+		String find = String.valueOf(VisitSubTree(tree.getChild(2), data, local));
 
 		return str.indexOf(find);
 	}
@@ -531,20 +534,20 @@ public class FunctionExpression extends BaseExpression {
 	 * @return
 	 * @throws Exception
 	 */
-	private Object DATEDIFF(Tree tree, Object data) throws Exception {
+	private Object DATEDIFF(Tree tree, Object data, Object local) throws Exception {
 
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return null;
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return null;
 		}
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		java.util.Date now = df.parse(String.valueOf(VisitSubTree(
-				tree.getChild(1), data)));
+				tree.getChild(1), data, local)));
 		java.util.Date date = df.parse(String.valueOf(VisitSubTree(
-				tree.getChild(2), data)));
+				tree.getChild(2), data, local)));
 		long l = now.getTime() - date.getTime();
 		return l / (24 * 60 * 60 * 1000);
 	}
@@ -556,244 +559,249 @@ public class FunctionExpression extends BaseExpression {
 	 * @return
 	 * @throws Exception
 	 */
-	private Object CONTAIN(Tree tree, Object data) throws Exception {
+	private Object CONTAIN(Tree tree, Object data, Object local) throws Exception {
 
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return null;
 		}
-		if (VisitSubTree(tree.getChild(2), data) == null) {
+		if (VisitSubTree(tree.getChild(2), data, local) == null) {
 			return null;
 		}
 
 		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		java.util.Date now = df.parse(String.valueOf(VisitSubTree(
-				tree.getChild(1), data)));
+				tree.getChild(1), data, local)));
 		java.util.Date date = df.parse(String.valueOf(VisitSubTree(
-				tree.getChild(2), data)));
+				tree.getChild(2), data, local)));
 		long l = now.getTime() - date.getTime();
 		return l / (24 * 60 * 60 * 1000);
 	}
 
-	private Object filter(Tree tree, Object data) throws Exception {
+	private Object filter(Tree tree, Object data,Object local) throws Exception {
 		ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-				_tree.getChild(1), data);
-		String key = (String) VisitSubTree(_tree.getChild(2), data);
-		String filter = (String) VisitSubTree(_tree.getChild(3), data);
+				_tree.getChild(1), data, local);
+		String key = (String) VisitSubTree(_tree.getChild(2), data, local);
+		String filter = (String) VisitSubTree(_tree.getChild(3), data, local);
 		HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-		HashMap<String, Object> local = new HashMap<String, Object>();
+		HashMap<String, Object> localHm = (HashMap<String, Object>)local;
 		return ExpressionFunctionHelper.filter(collection, key, filter, hpData,
-				local);
+				localHm);
 	}
 
-	private Object count(Tree tree, Object data) throws Exception {
+	private Object count(Tree tree, Object data, Object local) throws Exception {
 		if (_tree.getChildCount() - 1 == 1) {
-			if (VisitSubTree(tree.getChild(1), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null) {
 				return null;
 			}
 			ArrayList collection = (ArrayList) VisitSubTree(
-					_tree.getChild(1), data);
+					_tree.getChild(1), data, local);
 			return ExpressionFunctionHelper.count(collection);
 		} else {
-			if (VisitSubTree(tree.getChild(1), data) == null
-					|| VisitSubTree(tree.getChild(2), data) == null
-					|| VisitSubTree(tree.getChild(3), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null
+					|| VisitSubTree(tree.getChild(2), data, local) == null
+					|| VisitSubTree(tree.getChild(3), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
-			String key = (String) VisitSubTree(_tree.getChild(2), data);
-			String filter = (String) VisitSubTree(_tree.getChild(3), data);
+					_tree.getChild(1), data, local);
+			String key = (String) VisitSubTree(_tree.getChild(2), data, local);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data, local);
 			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-			HashMap<String, Object> local = new HashMap<String, Object>();
+			HashMap<String, Object> hpLocal = (HashMap<String, Object>)local;
 			return ExpressionFunctionHelper.count(collection, key, filter,
-					hpData, local);
+					hpData, hpLocal);
 		}
 	}
 
-	private Object exist(Tree tree, Object data) throws Exception {
+	private Object exist(Tree tree, Object data, Object local) throws Exception {
 
-		if (VisitSubTree(tree.getChild(1), data) == null
-				|| VisitSubTree(tree.getChild(2), data) == null
-				|| VisitSubTree(tree.getChild(3), data) == null) {
+		if (VisitSubTree(tree.getChild(1), data, local) == null
+				|| VisitSubTree(tree.getChild(2), data, local) == null
+				|| VisitSubTree(tree.getChild(3), data, local) == null) {
 			return null;
 		}
 		ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-				_tree.getChild(1), data);
-		String key = (String) VisitSubTree(_tree.getChild(2), data);
-		String filter = (String) VisitSubTree(_tree.getChild(3), data);
+				_tree.getChild(1), data, local);
+		String key = (String) VisitSubTree(_tree.getChild(2), data, local);
+		String filter = (String) VisitSubTree(_tree.getChild(3), data, local);
 		HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-		HashMap<String, Object> local = new HashMap<String, Object>();
+		HashMap<String, Object> hplocal = (HashMap<String, Object>)local;
 		return ExpressionFunctionHelper.exist(collection, key, filter, hpData,
-				local);
+				hplocal);
 	}
 	
-	private Object min(Tree tree, Object data) throws Exception {
+	private Object min(Tree tree, Object data, Object local) throws Exception {
 
 		if (_tree.getChildCount() - 1 == 2) {
-			if (VisitSubTree(tree.getChild(1), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
+					_tree.getChild(1), data, local);
 			String field = String.valueOf(VisitSubTree(
-					_tree.getChild(1), data));
+					_tree.getChild(1), data, local));
 			return ExpressionFunctionHelper.min(collection, field);
 		} else if (_tree.getChildCount() - 1 == 4) {
-			if (VisitSubTree(tree.getChild(1), data) == null
-					|| VisitSubTree(tree.getChild(2), data) == null
-					|| VisitSubTree(tree.getChild(3), data) == null
-					|| VisitSubTree(tree.getChild(4), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null
+					|| VisitSubTree(tree.getChild(2), data, local) == null
+					|| VisitSubTree(tree.getChild(3), data, local) == null
+					|| VisitSubTree(tree.getChild(4), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
-			String key = (String) VisitSubTree(_tree.getChild(2), data);
-			String filter = (String) VisitSubTree(_tree.getChild(3), data);
-			String field = (String) VisitSubTree(_tree.getChild(4), data);
+					_tree.getChild(1), data, local);
+			String key = (String) VisitSubTree(_tree.getChild(2), data, local);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data, local);
+			String field = (String) VisitSubTree(_tree.getChild(4), data, local);
 			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-			HashMap<String, Object> local = new HashMap<String, Object>();
+			HashMap<String, Object> hplocal = (HashMap<String, Object>)local;
 			return ExpressionFunctionHelper.min(collection, key, field, filter,
-					hpData, local);
+					hpData, hplocal);
 		}else {
 			return null;
 		}
 	}
 
-	private Object max(Tree tree, Object data) throws Exception {
+	private Object max(Tree tree, Object data, Object local) throws Exception {
 
 		if (_tree.getChildCount() - 1 == 2) {
-			if (VisitSubTree(tree.getChild(1), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
+					_tree.getChild(1), data, local);
 			String field = String.valueOf(VisitSubTree(
-					_tree.getChild(1), data));
+					_tree.getChild(1), data, local));
 			return ExpressionFunctionHelper.max(collection, field);
 		} else if (_tree.getChildCount() - 1 == 4) {
-			if (VisitSubTree(tree.getChild(1), data) == null
-					|| VisitSubTree(tree.getChild(2), data) == null
-					|| VisitSubTree(tree.getChild(3), data) == null
-					|| VisitSubTree(tree.getChild(4), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null
+					|| VisitSubTree(tree.getChild(2), data, local) == null
+					|| VisitSubTree(tree.getChild(3), data, local) == null
+					|| VisitSubTree(tree.getChild(4), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
-			String key = (String) VisitSubTree(_tree.getChild(2), data);
-			String filter = (String) VisitSubTree(_tree.getChild(3), data);
-			String field = (String) VisitSubTree(_tree.getChild(4), data);
+					_tree.getChild(1), data, local);
+			String key = (String) VisitSubTree(_tree.getChild(2), data, local);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data, local);
+			String field = (String) VisitSubTree(_tree.getChild(4), data, local);
 			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-			HashMap<String, Object> local = new HashMap<String, Object>();
+			HashMap<String, Object> hplocal = (HashMap<String, Object>)local;
 			return ExpressionFunctionHelper.max(collection, key, field, filter,
-					hpData, local);
+					hpData, hplocal);
 		}else {
 			return null;
 		}
 	}
 	
-	private Object sum(Tree tree, Object data) throws Exception {
+	private Object sum(Tree tree, Object data, Object local) throws Exception {
 
 		if (_tree.getChildCount() - 1 == 2) {
-			if (VisitSubTree(tree.getChild(1), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
+					_tree.getChild(1), data, local);
 			String field = String.valueOf(VisitSubTree(
-					_tree.getChild(1), data));
+					_tree.getChild(1), data, local));
 			return ExpressionFunctionHelper.sum(collection, field);
 		} else if (_tree.getChildCount() - 1 == 4) {
-			if (VisitSubTree(tree.getChild(1), data) == null
-					|| VisitSubTree(tree.getChild(2), data) == null
-					|| VisitSubTree(tree.getChild(3), data) == null
-					|| VisitSubTree(tree.getChild(4), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null
+					|| VisitSubTree(tree.getChild(2), data, local) == null
+					|| VisitSubTree(tree.getChild(3), data, local) == null
+					|| VisitSubTree(tree.getChild(4), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
-			String key = (String) VisitSubTree(_tree.getChild(2), data);
-			String filter = (String) VisitSubTree(_tree.getChild(3), data);
-			String field = (String) VisitSubTree(_tree.getChild(4), data);
+					_tree.getChild(1), data, local);
+			String key = (String) VisitSubTree(_tree.getChild(2), data, local);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data, local);
+			String field = (String) VisitSubTree(_tree.getChild(4), data, local);
 			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-			HashMap<String, Object> local = new HashMap<String, Object>();
+			HashMap<String, Object> hplocal = (HashMap<String, Object>)local;
 			return ExpressionFunctionHelper.sum(collection, key, field, filter,
-					hpData, local);
+					hpData, hplocal);
 		}else {
 			return null;
 		}
 	}
 	
-	private Object avg(Tree tree, Object data) throws Exception {
+	private Object avg(Tree tree, Object data, Object local) throws Exception {
 
 		if (_tree.getChildCount() - 1 == 2) {
-			if (VisitSubTree(tree.getChild(1), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
+					_tree.getChild(1), data, local);
 			String field = String.valueOf(VisitSubTree(
-					_tree.getChild(1), data));
+					_tree.getChild(1), data, local));
 			return ExpressionFunctionHelper.avg(collection, field);
 		} else if (_tree.getChildCount() - 1 == 4) {
-			if (VisitSubTree(tree.getChild(1), data) == null
-					|| VisitSubTree(tree.getChild(2), data) == null
-					|| VisitSubTree(tree.getChild(3), data) == null
-					|| VisitSubTree(tree.getChild(4), data) == null) {
+			if (VisitSubTree(tree.getChild(1), data, local) == null
+					|| VisitSubTree(tree.getChild(2), data, local) == null
+					|| VisitSubTree(tree.getChild(3), data, local) == null
+					|| VisitSubTree(tree.getChild(4), data, local) == null) {
 				return null;
 			}
 			ArrayList<?> collection = (ArrayList<?>) VisitSubTree(
-					_tree.getChild(1), data);
-			String key = (String) VisitSubTree(_tree.getChild(2), data);
-			String filter = (String) VisitSubTree(_tree.getChild(3), data);
-			String field = (String) VisitSubTree(_tree.getChild(4), data);
+					_tree.getChild(1), data, local);
+			String key = (String) VisitSubTree(_tree.getChild(2), data, local);
+			String filter = (String) VisitSubTree(_tree.getChild(3), data, local);
+			String field = (String) VisitSubTree(_tree.getChild(4), data, local);
 			HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-			HashMap<String, Object> local = new HashMap<String, Object>();
+			HashMap<String, Object> hplocal = (HashMap<String, Object>)local;
 			return ExpressionFunctionHelper.avg(collection, key, field, filter,
-					hpData, local);
+					hpData, hplocal);
 		}else {
 			return null;
 		}
 	}
 	
-	private Object existKey(Tree tree, Object data) throws Exception{
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+	private Object existKey(Tree tree, Object data, Object local) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return null;
 		}
-		String key = (String) VisitSubTree(_tree.getChild(1), data);
+		String key = (String) VisitSubTree(_tree.getChild(1), data, local);
 		HashMap<String, Object> hpData = (HashMap<String, Object>) data;
-		HashMap<String, Object> local = new HashMap<String, Object>();
-		return ExpressionFunctionHelper.existKey(key, hpData, local);
+		HashMap<String, Object> hplocal = (HashMap<String, Object>)local;
+		return ExpressionFunctionHelper.existKey(key, hpData, hplocal);
 	}
 	
-	private Object isNull(Tree tree, Object data) throws Exception{
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+	private Object isNull(Tree tree, Object data, Object local) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return null;
 		}
-		Object obj = (String) VisitSubTree(_tree.getChild(1), data);
+		Object obj = (String) VisitSubTree(_tree.getChild(1), data, local);
 		return ExpressionFunctionHelper.isNull(obj);
 	}
 	
-	private Object isNotNull(Tree tree, Object data) throws Exception{
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+	private Object isNotNull(Tree tree, Object data, Object local) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return null;
 		}
-		Object obj = (String) VisitSubTree(_tree.getChild(1), data);
+		Object obj = (String) VisitSubTree(_tree.getChild(1), data, local);
 		return ExpressionFunctionHelper.isNotNull(obj);
 	}
 	
-	private Object isDate(Tree tree, Object data) throws Exception{
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+	private Object isDate(Tree tree, Object data, Object local) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return null;
 		}
-		Object obj = (String) VisitSubTree(_tree.getChild(1), data);
+		Object obj = (String) VisitSubTree(_tree.getChild(1), data, local);
 		return ExpressionFunctionHelper.isDate(obj);
 	}
 	
-	private Object toDate(Tree tree, Object data) throws Exception{
-		if (VisitSubTree(tree.getChild(1), data) == null) {
+	private Object toDate(Tree tree, Object data, Object local) throws Exception{
+		if (VisitSubTree(tree.getChild(1), data, local) == null) {
 			return null;
 		}
-		String str = (String) VisitSubTree(_tree.getChild(1), data);
+		String str = (String) VisitSubTree(_tree.getChild(1), data, local);
 		return ExpressionFunctionHelper.toDate(str);
+	}
+
+	@Override
+	public Object Evaluate(Object data) throws Exception {
+		return Evaluate(data, null);
 	}
 }

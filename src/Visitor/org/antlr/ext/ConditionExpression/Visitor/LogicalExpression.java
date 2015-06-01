@@ -11,7 +11,7 @@ public class LogicalExpression extends BaseExpression
 	}
 
 	@Override
-	public Object Evaluate(Object data) throws Exception
+	public Object Evaluate(Object data, Object local) throws Exception
 	{
 		Tree left = _tree.getChild(0);
 		Tree right = _tree.getChild(1);
@@ -19,28 +19,33 @@ public class LogicalExpression extends BaseExpression
 		switch (_tree.getType())
 		{
 			case ExpressionLexer.AND:
-				if (!Boolean.parseBoolean(super.VisitSubTree(left, data).toString()))
+				if (!Boolean.parseBoolean(super.VisitSubTree(left, data, local).toString()))
 				{
 					return false;
 				}
 				else
 				{
-					return Boolean.parseBoolean(super.VisitSubTree(right, data).toString());
+					return Boolean.parseBoolean(super.VisitSubTree(right, data, local).toString());
 				}
 
 			case ExpressionLexer.OR:
-				if (Boolean.parseBoolean(super.VisitSubTree(left, data).toString()))
+				if (Boolean.parseBoolean(super.VisitSubTree(left, data, local).toString()))
 				{
 					return true;
 				}
 				else
 				{
-					return Boolean.parseBoolean(super.VisitSubTree(right, data).toString());
+					return Boolean.parseBoolean(super.VisitSubTree(right, data, local).toString());
 				}
 
 			default:
 				throw GetTreeException(String.format("无法识别的操作符[%1$s]", _tree.getType()));
 		}
 
+	}
+
+	@Override
+	public Object Evaluate(Object data) throws Exception {
+		return Evaluate(data, null);
 	}
 }

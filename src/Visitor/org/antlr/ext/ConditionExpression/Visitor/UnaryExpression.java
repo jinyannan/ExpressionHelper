@@ -11,12 +11,12 @@ public class UnaryExpression extends BaseExpression
 	}
 
 	@Override
-	public Object Evaluate(Object data) throws Exception
+	public Object Evaluate(Object data, Object local) throws Exception
 	{
 		Tree left = _tree.getChild(0);
 		Tree right = _tree.getChild(1);
 //C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
-		Object result = super.VisitSubTree(right, data);
+		Object result = super.VisitSubTree(right, data, local);
 
 		switch (_tree.getType())
 		{
@@ -46,5 +46,10 @@ public class UnaryExpression extends BaseExpression
 			default:
 				throw GetTreeException(String.format("无法识别的操作符[%1$s]", _tree.getType()));
 		}
+	}
+
+	@Override
+	public Object Evaluate(Object data) throws Exception {
+		return Evaluate(data, null);
 	}
 }

@@ -17,6 +17,12 @@ public class RootExpression extends BaseExpression
 	@Override
 	public Object Evaluate(Object data) throws Exception
 	{
-		return super.VisitSubTree(_tree, data);
+		return super.VisitSubTree(_tree, data, null);
+	}
+	
+	@Override
+	public Object Evaluate(Object data, Object local) throws Exception
+	{
+		return super.VisitSubTree(_tree, data, local);
 	}
 }

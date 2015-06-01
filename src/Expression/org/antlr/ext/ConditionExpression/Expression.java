@@ -1,5 +1,7 @@
 ﻿package  org.antlr.ext.ConditionExpression;
 
+import java.util.HashMap;
+
 import org.antlr.ext.ConditionExpression.Generated.ExpressionLexer;
 import org.antlr.ext.ConditionExpression.Generated.ExpressionParser;
 import org.antlr.ext.ConditionExpression.Visitor.IGetValue;
@@ -93,26 +95,28 @@ public class Expression
 
 		
 	}
-
-	public final Object Calculate(Object data) throws Exception
+	public final Object Calculate(Object data) throws Exception{
+		return Calculate(data, null);
+	}
+	public final Object Calculate(Object data, Object local) throws Exception
 	{
 		if (!_hasCompile)
 		{
 			Compile();
 		}
-
+		HashMap<String, Object> hmlocal = (HashMap<String, Object>)local;
 		RootExpression exp = new RootExpression(_tree);
 		exp.setUserFunction(_getValueOperation);
-		return exp.Evaluate(data);
+		return exp.Evaluate(data, (Object)hmlocal);
 	}
 
-	public final Object Calculate(Object data, IGetValue func) throws Exception
+	public final Object Calculate(Object data, Object local,IGetValue func) throws Exception
 	{
 		this.setUserFunction(func);
-		return this.Calculate(data);
+		return this.Calculate(data, local);
 	}
 
-	public final Object ExecuteExpression(String exprCond, Object data) {
+	public final Object ExecuteExpression(String exprCond, Object data, Object local) {
 		String result = "";
 		Object m = null;
 		Expression expObj = new Expression(exprCond,
@@ -123,7 +127,7 @@ public class Expression
 				//data = (Object) ExecRuleHelper.getTestData();
 				result = "";
 			}
-			m = expObj.Calculate(data);
+			m = expObj.Calculate(data ,local);
 			if (m == null) {
 				result = "error";
 			} else {

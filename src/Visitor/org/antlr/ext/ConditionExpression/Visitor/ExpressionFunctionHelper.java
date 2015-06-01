@@ -482,7 +482,7 @@ public class ExpressionFunctionHelper {
 			else{
 				//System.out.println(real_filter);
 				//filter="$Person.age>1";
-				value = new Expression().ExecuteExpression(real_filter, local);
+				value = new Expression().ExecuteExpression(real_filter, data, local);
 				//value=walker.value(real_filter, data, local);
 			}
 			

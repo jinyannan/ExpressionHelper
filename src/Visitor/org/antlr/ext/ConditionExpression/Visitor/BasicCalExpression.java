@@ -10,14 +10,19 @@ public class BasicCalExpression extends BaseExpression
 	{
 		super(exp, tree);
 	}
+	
+	@Override
+	public Object Evaluate(Object data) throws Exception {
+		return Evaluate(data, null);
+	}
 
 	@Override
-	public Object Evaluate(Object data) throws Exception
+	public Object Evaluate(Object data, Object local) throws Exception
 	{
 //C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
-		Object leftResult = super.VisitSubTree(_tree.getChild(0), data);
+		Object leftResult = super.VisitSubTree(_tree.getChild(0), data, local);
 //C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
-		Object rightResult = super.VisitSubTree(_tree.getChild(1), data);
+		Object rightResult = super.VisitSubTree(_tree.getChild(1), data, local);
 
 		switch (_tree.getType())
 		{
@@ -40,6 +45,7 @@ public class BasicCalExpression extends BaseExpression
 				throw GetTreeException(String.format("无法识别的操作符[%1$s]", _tree.getType()));
 		}
 	}
+
 
 
 }
