@@ -115,6 +115,10 @@ public class Expression
 		this.setUserFunction(func);
 		return this.Calculate(data, local);
 	}
+	
+	public final Object ExecuteExpression(String exprCond, Object data) {
+		return ExecuteExpression(exprCond, data, null);
+	}
 
 	public final Object ExecuteExpression(String exprCond, Object data, Object local) {
 		String result = "";
