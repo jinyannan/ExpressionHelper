@@ -104,10 +104,10 @@ public class Expression
 		{
 			Compile();
 		}
-		HashMap<String, Object> hmlocal = (HashMap<String, Object>)local;
+		HashMap<String, Object> hmlocal = (local == null ? null : (HashMap<String, Object>)local);
 		RootExpression exp = new RootExpression(_tree);
 		exp.setUserFunction(_getValueOperation);
-		return exp.Evaluate(data, (Object)hmlocal);
+		return exp.Evaluate(data, (hmlocal == null ? null : (Object)hmlocal));
 	}
 
 	public final Object Calculate(Object data, Object local,IGetValue func) throws Exception
