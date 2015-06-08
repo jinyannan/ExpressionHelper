@@ -26,7 +26,6 @@ public class FunctionExpression extends BaseExpression {
 	public Object Evaluate(Object data, Object local) throws Exception {
 		double value;
 		String funcName = _tree.getChild(0).toString();
-		// C# TO JAVA CONVERTER NOTE: The following 'switch' operated on a
 		// string member and was converted to Java 'if-else' logic:
 		// switch (funcName.ToUpper())
 		// ORIGINAL LINE: case "BT":

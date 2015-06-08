@@ -19,9 +19,7 @@ public class BasicCalExpression extends BaseExpression
 	@Override
 	public Object Evaluate(Object data, Object local) throws Exception
 	{
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
 		Object leftResult = super.VisitSubTree(_tree.getChild(0), data, local);
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
 		Object rightResult = super.VisitSubTree(_tree.getChild(1), data, local);
 
 		switch (_tree.getType())

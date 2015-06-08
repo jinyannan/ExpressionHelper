@@ -23,7 +23,6 @@ import ExpressionHelper.EntryHelper;
  @param data
  @return 
 */
-//C# TO JAVA CONVERTER TODO TASK: Delegates are not available in Java:
 //public delegate object GetValue(string funcName, object[] funcParams, object data);
 
 public class Expression
@@ -89,7 +88,6 @@ public class Expression
 			_tree = (CommonTree) r.getTree();
 			_hasCompile = true;
 		} catch (RecognitionException e) {
-			// TODO Auto-generated catch block
 			throw new Exception(e.getMessage());
 		}
 

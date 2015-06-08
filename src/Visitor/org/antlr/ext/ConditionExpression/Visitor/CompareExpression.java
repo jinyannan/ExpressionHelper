@@ -16,9 +16,7 @@ public class CompareExpression extends BaseExpression
 	{
 		Tree left = _tree.getChild(0);
 		Tree right = _tree.getChild(1);
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
 		Object leftResult = super.VisitSubTree(left, data, local);
-//C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to the C# 'Object' keyword:
 		Object rightResult = super.VisitSubTree(right, data, local);
 
 		switch (_tree.getType())
