@@ -9,7 +9,7 @@ import javax.sql.RowSetMetaData;
 import javax.sql.rowset.CachedRowSet;
 
 import org.antlr.ext.ConditionExpression.Generated.ExpressionParser.stringLiteral_return;
-import org.antlr.ext.ConditionExpression.Visitor.IGetValue;
+import org.antlr.ext.ConditionExpression.Utility.IGetValue;
 import org.antlr.gunit.gUnitParser.file_return;
 
 public class EntryHelper implements IGetValue {

@@ -2,21 +2,13 @@
 
 //import ExpressionParser;
 //import FunctionInfo;
-
 //import ExpressionParser;
 //import FunctionInfo;
-
-
 import java.util.HashMap;
-
 //import ExpressionParser;
-
-
-
-
-
 import org.antlr.ext.ConditionExpression.ExpressionException;
 import org.antlr.ext.ConditionExpression.Generated.ExpressionLexer;
+import org.antlr.ext.ConditionExpression.Utility.IGetValue;
 import org.antlr.runtime.tree.Tree;
 import org.stringtemplate.v4.compiler.STParser.andConditional_return;
 
@@ -27,8 +19,7 @@ public abstract class BaseExpression
 	private static final int HashMap = 0;
 	//public RootVisit rootVisit;
 	//public abstract object Evaluate(ITree tree);
-	//public abstract object Evaluate();
-	//public abstract Object Evaluate(Object data) throws Exception;
+	public abstract Object Evaluate() throws Exception;
 	public abstract Object Evaluate(Object data) throws Exception;
 	public abstract Object Evaluate(Object data, Object local) throws Exception;
 	protected Tree _tree;
@@ -66,7 +57,6 @@ public abstract class BaseExpression
 		{
 			switch (tree.getType())
 			{
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#region value
 				case ExpressionLexer.TYPE_INTEGER:
 				case ExpressionLexer.TYPE_STRING:
@@ -74,10 +64,8 @@ public abstract class BaseExpression
 				case ExpressionLexer.TYPE_BOOLEAN:
 				case ExpressionLexer.TYPE_DATETIME:
 					return new ValueExpression(this, tree).Evaluate(data, local);
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#region basicCalc
 				case ExpressionLexer.PLUS:
 				case ExpressionLexer.MINUS:
@@ -85,26 +73,20 @@ public abstract class BaseExpression
 				case ExpressionLexer.DIV:
 				case ExpressionLexer.POW:
 					return new BasicCalExpression(this, tree).Evaluate(data, local);
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#region LogicCalc
 				case ExpressionLexer.AND:
 				case ExpressionLexer.OR:
 					return new LogicalExpression(this, tree).Evaluate(data, local);
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#region Unary
 				//case ExpressionLexer.NOT:
 				case ExpressionLexer.UNARY:
 					return new UnaryExpression(this, tree).Evaluate(data, local);
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#region Compare
 				case ExpressionLexer.EQUALS:
 				case ExpressionLexer.NOTEQUALS:
@@ -113,10 +95,8 @@ public abstract class BaseExpression
 				case ExpressionLexer.LT:
 				case ExpressionLexer.LTEQ:
 					return new CompareExpression(this, tree).Evaluate(data, local);
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#endregion
 
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#region Function
 					//XXX:查找数据集，如果local中存在该记录集，则使用local的
 				case ExpressionLexer.DATA:
@@ -166,11 +146,7 @@ public abstract class BaseExpression
 					{
 						return new FunctionExpression(this, tree).Evaluate(data, local);    
 					}
-					
-//C# TO JAVA CONVERTER TODO TASK: There is no preprocessor in Java:
 					///#endregion
-
-
 				default:
 					throw GetTreeException("无法识别的节点类型");
 			}
@@ -179,7 +155,6 @@ public abstract class BaseExpression
 		{
 			throw GetTreeException("出现错误", e);
 		}
-
 	}
 
 	private java.util.HashMap HashMap(Object data) {

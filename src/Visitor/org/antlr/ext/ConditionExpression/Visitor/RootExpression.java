@@ -25,4 +25,10 @@ public class RootExpression extends BaseExpression
 	{
 		return super.VisitSubTree(_tree, data, local);
 	}
+
+	@Override
+	public Object Evaluate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

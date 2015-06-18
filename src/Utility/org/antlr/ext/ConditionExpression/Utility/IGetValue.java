@@ -1,4 +1,4 @@
-package org.antlr.ext.ConditionExpression.Visitor;
+package org.antlr.ext.ConditionExpression.Utility;
 
 public interface IGetValue {
 	

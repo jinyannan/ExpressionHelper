@@ -7,6 +7,7 @@ import java.lang.reflect.Method;
 
 
 
+
 import org.antlr.ext.ConditionExpression.Generated.ExpressionLexer;
 import org.antlr.runtime.tree.Tree;
 
@@ -103,6 +104,12 @@ public class DotExpression extends BaseExpression {
 	@Override
 	public Object Evaluate(Object data) throws Exception {
 		return Evaluate(data, null);
+	}
+
+	@Override
+	public Object Evaluate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

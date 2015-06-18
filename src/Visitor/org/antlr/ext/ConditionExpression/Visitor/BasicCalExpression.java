@@ -44,6 +44,12 @@ public class BasicCalExpression extends BaseExpression
 		}
 	}
 
+	@Override
+	public Object Evaluate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 
 }

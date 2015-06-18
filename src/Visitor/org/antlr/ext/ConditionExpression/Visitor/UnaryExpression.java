@@ -51,4 +51,10 @@ public class UnaryExpression extends BaseExpression
 	public Object Evaluate(Object data) throws Exception {
 		return Evaluate(data, null);
 	}
+
+	@Override
+	public Object Evaluate() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

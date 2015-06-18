@@ -2,7 +2,7 @@ package org.antlr.ext.ConditionExpression.Utility;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -14,9 +14,16 @@ public class ReflectionHelper {
 
 	private static HashMap<String,Method> METHOD_CACHER=new HashMap<String,Method>();
 	
-	private static String getMethodKey(Object target,String funcname,Class[] classes)
+	/**
+	 * 
+	 * @param target
+	 * @param funcname
+	 * @param classes
+	 * @return
+	 */
+	private static String getMethodKey(Class target,String funcname,Class[] classes)
 	{
-		String key=target.getClass().getName()+"|"+funcname+"|";
+		String key=target.getName()+"|"+funcname+"|";
 		if(classes != null)
 		{
 			for(int i=0; i < classes.length; i++)
@@ -29,6 +36,11 @@ public class ReflectionHelper {
 		
 	}
 	
+	/**
+	 * 
+	 * @param c
+	 * @return
+	 */
 	private static Class[] convertToPrimivite(Class[] c)
 	{
 		if(c==null) return null;
@@ -54,12 +66,17 @@ public class ReflectionHelper {
 		
 	}
 	
-	public static Object invokeMethod(Object target,String funcname,Object[] params,Class[] classes) throws Exception
+	/**
+	 * 
+	 * @param target
+	 * @param funcname
+	 * @param params
+	 * @param classes
+	 * @return
+	 * @throws Exception
+	 */
+	private static Method find(Class target,String funcname,Class[] classes) throws Exception
 	{
-		Object result=null;
-		//get data class
-		
-		
 		Method setter = null;
 		
 		//check cache
@@ -70,35 +87,14 @@ public class ReflectionHelper {
 		}
 		else
 		{
-			/*
-			//����target��������ʵ�ֵ����нӿ�
-			for (Class superInterface : target.getClass().getInterfaces())
-			{
-				try
-				{
-					//��ȡ��ֵע�������setter����
-					setter = target.getClass().getMethod(
-						funcname , superInterface);
-					//���ɹ�ȡ�øýӿڶ�Ӧ�ķ�����ֱ�����ѭ��
-					break;
-				}
-				catch (NoSuchMethodException ex)
-				{
-					//���û���ҵ���Ӧ��setter�����������´�ѭ��
-					continue;
-				}
-			}
-			*/
 			try
 			{
-				//��ȡ��ֵע�������setter����
-				setter = target.getClass().getMethod(funcname , classes);
+				setter = target.getMethod(funcname , classes);
 				//cache method
 				ReflectionHelper.METHOD_CACHER.put(key, setter);
 			}
 			catch (NoSuchMethodException ex)
 			{
-				//���û���ҵ���Ӧ��setter�����������´�ѭ��
 			}
 			
 			if(setter==null)
@@ -111,7 +107,7 @@ public class ReflectionHelper {
 				}
 				else{
 					try{
-						setter=target.getClass().getMethod(funcname,primitiveClasses);
+						setter=target.getMethod(funcname,primitiveClasses);
 						ReflectionHelper.METHOD_CACHER.put(key, setter);
 					}
 					catch(Exception e)
@@ -150,24 +146,44 @@ public class ReflectionHelper {
 				throw new Exception("��Ա����("+funcname+")�Ҳ�����Ϊ˽�з�����");
 			}
 			
-			
-			/*
-			//���setter������ȻΪnull��
-			//��ֱ��ȡ��targetʵ�����Ӧ��setter����
-			if (setter == null)
-			{
-				setter=ReflectionHelper.getDeclaredMethod(target,funcname,classes);
-				if(setter==null){
-					throw new Exception("��Ա����("+funcname+")�Ҳ�����Ϊ˽�з�����");
-				}
-			}
-			*/
-			
-			//cache method
-			//ReflectionHelper.METHOD_CACHER.put(key, setter);
-			
 		}
 		
+		return setter;
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param funcname
+	 * @param params
+	 * @param classes
+	 * @return
+	 * @throws Exception
+	 */
+	public static Class getMethodReturnType(Class target,String funcname,Class[] classes) throws Exception
+	{
+		Method method=ReflectionHelper.find(target, funcname,  classes);
+		
+		return method.getReturnType();
+		
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param funcname
+	 * @param params
+	 * @param classes
+	 * @return
+	 * @throws Exception
+	 */
+	public static Object invokeMethod(Object target,String funcname,Object[] params,Class[] classes) throws Exception
+	{
+		Object result=null;
+		//get data class
+		
+		
+		Method setter = ReflectionHelper.find(target.getClass(), funcname, classes);
 		
 		try{
 			//ִ��setterע��,no params
@@ -183,12 +199,17 @@ public class ReflectionHelper {
 		return result;
 	}
 	
-	
-	private static HashMap<Method,Class[]> getMethod(Object target,String methodName)
+	/**
+	 * 
+	 * @param target
+	 * @param methodName
+	 * @return
+	 */
+	private static HashMap<Method,Class[]> getMethod(Class target,String methodName)
 	{
 		HashMap<Method,Class[]> map=new HashMap<Method,Class[]>();
 		
-		Method[] methods=target.getClass().getMethods();
+		Method[] methods=target.getMethods();
 		for(int i=0; i<methods.length; i++)
 		{
 			if(methods[i].getName().equals(methodName))
@@ -198,62 +219,67 @@ public class ReflectionHelper {
 		}
 		return map;
 	}
-
-
-	private static Method getDeclaredMethod(Object object, String methodName, Class<?> ... parameterTypes){   
-        Method method = null ;   
-           
-        for(Class<?> clazz = object.getClass() ;clazz != null ; clazz = clazz.getSuperclass()) {   
-            try {   
-            	method = clazz.getDeclaredMethod(methodName, parameterTypes) ;
-                /*
-            	System.out.println(clazz.getName());
-                Method[] m=clazz.getDeclaredMethods();
-                for(int i=0; i<m.length;i++)
-                {
-                	System.out.println("----"+m[i].getName());
-                	Type[] t=m[i].getGenericParameterTypes();
-                	for(int k=0; k < t.length; k++)
-                	{
-                		System.out.println(t[k].toString());
-                	}
-                	
-                	
-                }
-                
-                
-                m=clazz.getMethods();
-                for(int i=0; i<m.length;i++)
-                {
-                	System.out.println("*****"+m[i].getName());
-                	Type[] t=m[i].getGenericParameterTypes();
-                	for(int k=0; k < t.length; k++)
-                	{
-                		System.out.println(t[k].toString());
-                	}
-                	
-                	
-                }
-                */
-            	
-                return method ;   
-            } catch (Exception e) {   
-                //������ô����Ҫ��������������쳣��������д�������׳�ȥ��   
-                //���������쳣��ӡ���������ף���Ͳ���ִ��clazz = clazz.getSuperclass(),���Ͳ�����뵽��������   
-            	continue;
-               
-            }
-            
-        }   
-           
-        return null;   
-    }   
-
 	
+	/**
+	 * 
+	 * @param target
+	 * @param propsname
+	 * @return
+	 * @throws Exception
+	 */
+	public static Class getPropertyType(Class target,String propsname) throws Exception
+	{
+		Class fieldType=null;
+		try{
+			fieldType=ReflectionHelper.getProperFiled(target, propsname).getType();
+			return fieldType;
+		}
+		catch(Exception e)
+		{
+			
+		}
+		
+		//try to invoke get property method
+		String firstName = propsname.substring(0,1).toUpperCase();
+   		firstName="get"+firstName + propsname.substring(1);
+   		fieldType=ReflectionHelper.getMethodReturnType(target, firstName,null);
+   		
+   		return fieldType;
+	}
+	
+	/**
+	 * 
+	 * @param data
+	 * @param propsname
+	 * @return
+	 * @throws Exception
+	 */
+	private static Field getProperFiled(Class data,String propsname) throws Exception
+	{
+		Field   fields[]   =   data.getDeclaredFields();
+		for   (int   i   =   0;   i   <   fields.length;   i++)   
+        {
+          	if(fields[i].getName().equals(propsname))
+           	{
+           		return fields[i];
+           	}
+        } 
+		
+		throw new Exception ("û��ָ������("+propsname+")");
+        
+	}
+	
+	/**
+	 * 
+	 * @param data
+	 * @param propsname
+	 * @return
+	 * @throws Exception
+	 */
 	public static Object getProperty(Object data,String propsname) throws Exception
 	{
 		Object result=null;
-		boolean getted=false;
+		//boolean getted=false;
 		
 		if(data ==null){
 			throw new Exception("����Ϊ�գ�");
@@ -263,34 +289,56 @@ public class ReflectionHelper {
 			throw new Exception ("����ֵΪ��");
 		}
 		
-		
-		Field   fields[]   =   data.getClass().getDeclaredFields();
-        try{ 
-            for   (int   i   =   0;   i   <   fields.length;   i++)   
-            {
-            	if(fields[i].getName().equals(propsname))
-            	{
-            		result= fields[i].get(data);
-            		getted=true;
-            		break;
-            		
-            	}
-            } 
-        } 
-        catch(Exception   e){ 
-	         // e.printStackTrace();
-        } 
+		try{
+			Field field=ReflectionHelper.getProperFiled(data.getClass(), propsname);
+			result=field.get(data);
+		}
+		catch(Exception e)
+		{
+			
+		}
         
-        //try to invoke getProperty method
-   		String firstName = propsname.substring(0,1).toUpperCase();
-   		firstName="get"+firstName + propsname.substring(1);
-
-
-        if(!getted){
+        if(result==null){
+        	//try to invoke getProperty method
+       		String firstName = propsname.substring(0,1).toUpperCase();
+       		firstName="get"+firstName + propsname.substring(1);
+       		//try to invoke get method
         	result=ReflectionHelper.invokeMethod(data, firstName, null,null);
         }
         
         return result;
         
+	}
+	
+	/**
+	 * 
+	 * @param target
+	 * @param name
+	 * @return
+	 */
+	public static ArrayList<Method> getMethods(Class target,String name)
+	{
+		ArrayList<Method> list=new ArrayList<Method>();
+			
+		Method[] methods=target.getMethods();
+		for(int i=0; i<methods.length; i++)
+		{
+			if(methods[i].getName().startsWith(name)) list.add(methods[i]);
+		}
+		
+		return list;
+	}
+	
+	public static ArrayList<Field> getFields(Class target,String name)
+	{
+		ArrayList<Field> list=new ArrayList<Field>();
+			
+		Field[] fields=target.getFields();
+		for(int i=0; i<fields.length; i++)
+		{
+			if(fields[i].getName().startsWith(name)) list.add(fields[i]);
+		}
+		
+		return list;
 	}
 }

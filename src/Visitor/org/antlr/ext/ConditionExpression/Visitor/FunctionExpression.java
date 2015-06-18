@@ -28,33 +28,27 @@ public class FunctionExpression extends BaseExpression {
 		String funcName = _tree.getChild(0).toString();
 		// string member and was converted to Java 'if-else' logic:
 		// switch (funcName.ToUpper())
-		// ORIGINAL LINE: case "BT":
 		if (funcName.toUpperCase().equals("BT")) {
 			CheckMinParamCount(funcName, 2);
 			return BT(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "IN":
 		else if (funcName.toUpperCase().equals("IN")) {
 			CheckMinParamCount(funcName, 2);
 			return IN(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "IIF":
 		else if (funcName.toUpperCase().equals("IIF")) {
 			CheckParamCount(funcName, 3);
 			return IIF(_tree, data, local);
 
 		}
-		// ORIGINAL LINE: case "MID":
 		else if (funcName.toUpperCase().equals("MID")) {
 			CheckParamCount(funcName, 3);
 			return MID(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "LEFT":
 		else if (funcName.toUpperCase().equals("LEFT")) {
 			CheckParamCount(funcName, 2);
 			return LEFT(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "RIGHT":
 		else if (funcName.toUpperCase().equals("RIGHT")) {
 			CheckParamCount(funcName, 2);
 			return RIGHT(_tree, data, local);
@@ -62,7 +56,6 @@ public class FunctionExpression extends BaseExpression {
 			CheckParamCount(funcName, 2);
 			return RIGHT(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "LEN":
 		else if (funcName.toUpperCase().equals("LEN")) {
 			CheckParamCount(funcName, 1);
 			return LEN(_tree, data, local);
@@ -75,12 +68,10 @@ public class FunctionExpression extends BaseExpression {
 			CheckParamCount(funcName, 2);
 			return LOWER(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "INSTR":
 		else if (funcName.toUpperCase().equals("INSTR")) {
 			CheckParamCount(funcName, 2);
 			return INSTR(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "LIKE":
 		else if (funcName.toUpperCase().equals("LIKE")) {
 			CheckParamCount(funcName, 2);
 			return LIKE(_tree, data, local);
@@ -88,7 +79,6 @@ public class FunctionExpression extends BaseExpression {
 			CheckParamCount(funcName, 1);
 			return CHARINDEX(_tree, data, local);
 		}
-		// ORIGINAL LINE: case "INT":
 		else if (funcName.toUpperCase().equals("INT")) // /向下取整
 		{
 			CheckParamCount(funcName, 1);
@@ -96,7 +86,6 @@ public class FunctionExpression extends BaseExpression {
 					.toString());
 			return (int) Math.floor(value);
 		}
-		// ORIGINAL LINE: case "SQRT":
 		else if (funcName.toUpperCase().equals("SQRT")) {
 			CheckParamCount(funcName, 1);
 			value = Double.parseDouble(VisitSubTree(_tree.getChild(1), data, local)
@@ -108,8 +97,6 @@ public class FunctionExpression extends BaseExpression {
 		/**
 		 * 计算日期类型 Aardwolf.K
 		 */
-		// ORIGINAL LINE: case "DAYOFWEEK":
-		// FIXME
 		else if (funcName.toUpperCase().equals("DAYOFWEEK")) {
 			CheckParamCount(funcName, 0);
 			Calendar c = Calendar.getInstance();
@@ -802,5 +789,11 @@ public class FunctionExpression extends BaseExpression {
 	@Override
 	public Object Evaluate(Object data) throws Exception {
 		return Evaluate(data, null);
+	}
+
+	@Override
+	public Object Evaluate() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
