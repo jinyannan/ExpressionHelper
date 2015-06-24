@@ -265,7 +265,7 @@ public class ReflectionHelper {
            	}
         } 
 		
-		throw new Exception ("û��ָ������("+propsname+")");
+		throw new Exception ("不存在属性("+propsname+")");
         
 	}
 	

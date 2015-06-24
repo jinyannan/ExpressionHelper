@@ -51,7 +51,7 @@ public abstract class BaseExpression
 	}
 
 
-	protected final Object VisitSubTree(Tree tree, Object data, Object local) throws Exception
+	public Object VisitSubTree(Tree tree, Object data, Object local) throws Exception
 	{
 		try
 		{

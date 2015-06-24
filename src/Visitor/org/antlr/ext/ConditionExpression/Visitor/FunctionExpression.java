@@ -211,8 +211,6 @@ public class FunctionExpression extends BaseExpression {
 		}
 
 		if (this.getUserFunction() != null) {
-			// C# TO JAVA CONVERTER TODO TASK: There is no Java equivalent to
-			// the C# 'Object' keyword:
 			Object result = this.getUserFunction().GetValue(funcName,
 					funParams.toArray(new Object[] {}), data);
 			if (DataType.IsNumber(result)) {

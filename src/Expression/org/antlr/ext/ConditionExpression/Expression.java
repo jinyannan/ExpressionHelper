@@ -17,6 +17,7 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.ParserRuleReturnScope;
 import org.antlr.runtime.RecognitionException;
 import org.antlr.runtime.tree.CommonTree;
+import org.antlr.runtime.tree.Tree;
 
 import ExpressionHelper.EntryHelper;
 
@@ -33,6 +34,15 @@ public class Expression {
 	private String _expressionString;
 	private boolean _hasCompile;
 	private CommonTree _tree;
+	
+	public boolean is_hasCompile() {
+		return _hasCompile;
+	}
+
+	public void set_hasCompile(boolean _hasCompile) {
+		this._hasCompile = _hasCompile;
+	}
+
 	private IGetValue _getValueOperation;
 
 	public final IGetValue getUserFunction() {
@@ -89,6 +99,19 @@ public class Expression {
 
 	}
 
+	/**
+	 * 如果需要缓存tree以提高工作效率，使用下列两个方法直接传入tree，不通过compile生成
+	 * 
+	 * @return
+	 */
+	public CommonTree get_tree() {
+		return _tree;
+	}
+
+	public void set_tree(CommonTree _tree) {
+		this._tree = _tree;
+	}
+
 	public final Object Calculate(Object data) throws Exception {
 		return Calculate(data, null);
 	}
@@ -135,6 +158,38 @@ public class Expression {
 		return m;
 	}
 
+	public final Object ExecuteExpression(String exprCond, Object data,
+			Object local, Object cache) {
+		String result = "";
+		Object m = null;
+
+		try {
+			if (cache != null) {
+				HashMap<String, Tree> treeCache = (HashMap<String, Tree>)cache;
+				if (treeCache.containsKey(exprCond)) {
+					_tree = (CommonTree)treeCache.get(exprCond);
+					_hasCompile = true;
+				}else {
+					Compile();
+					treeCache.put(exprCond, _tree);
+				}
+			}
+			if (data == null) {
+				// data = (Object) ExecRuleHelper.getTestData();
+				result = "";
+			}
+			m = Calculate(data, local);
+			if (m == null) {
+				result = "error";
+			} else {
+				result = m.toString();
+			}
+		} catch (Exception e) {
+			result = "error";
+		}
+		return m;
+	}
+	
 	public final Object[] GetKeys(String exprCond){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		HashMap<String, Object> local = new HashMap<String, Object>();
@@ -166,7 +221,7 @@ public class Expression {
 		}
 	}
 	
-	public final Object getType(String exprCond) {
+	public Object getType(String exprCond, Object data, Object local) {
 		String result = "";
 		Object m = null;
 		_expressionString = exprCond;
@@ -177,7 +232,7 @@ public class Expression {
 				Compile();
 			}
 			TypeExpression exp = new TypeExpression(_tree);
-			return (Object) exp.Evaluate();
+			return (Object) exp.Evaluate(data, local);
 			
 		} catch (Exception e) {
 			result = "error";
