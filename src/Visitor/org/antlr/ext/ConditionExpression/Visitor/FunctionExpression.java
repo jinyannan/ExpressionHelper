@@ -54,7 +54,7 @@ public class FunctionExpression extends BaseExpression {
 			return RIGHT(_tree, data, local);
 		} else if (funcName.toUpperCase().equals("TRIM")) {
 			CheckParamCount(funcName, 2);
-			return RIGHT(_tree, data, local);
+			return TRIM(_tree, data, local);
 		}
 		else if (funcName.toUpperCase().equals("LEN")) {
 			CheckParamCount(funcName, 1);
@@ -246,7 +246,10 @@ public class FunctionExpression extends BaseExpression {
 	/**
 	 * 处理形如BT(aaa,1,3,6,9,11)这样的函数 即：(aaa>1 && aaa<3) || (aaa>6 && aaa<9) ||
 	 * (aaa>11)
-	 * 
+	 * 判断arg1是否在arg2与arg3之间，
+	 * 参数可成对变长，参数支持字符串、日期、数字，在范围之内则返回true，
+	 * 反之false。arg3若不传入则arg1<arg2既返回true
+	 * SAMPLE:BT(2,1,3),BT(2,1),BT(2,3,4,1,5)
 	 * @param tree
 	 * @param data
 	 * @return
@@ -282,6 +285,10 @@ public class FunctionExpression extends BaseExpression {
 	}
 
 	/**
+	 * IN(Object arg1,Object arg2,...)
+	 * arg1若与arg2~argn中任意一数值匹配则返回true，都不匹配返回false
+	 * 参数支持字符串与数字
+	 * IN("A","A","B","C")
 	 * @param tree
 	 * @param data
 	 * @return
@@ -301,6 +308,9 @@ public class FunctionExpression extends BaseExpression {
 	}
 
 	/**
+	 * IIF(Boolean expr, Object truepart, Object falsepart)
+	 * 第一个参数expr为表达式，为true则返回truepart，为false则返回falsepart
+	 * IIF("1=1","A","B")
 	 * @param tree
 	 * @param data
 	 * @return
@@ -316,6 +326,17 @@ public class FunctionExpression extends BaseExpression {
 		}
 	}
 
+	/**
+	 * MID(String str,int from,int length)
+	 * 取str中自from位置起始，length长度的字符串
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws NumberFormatException
+	 * @throws Exception
+	 */
+	
 	private Object MID(Tree tree, Object data, Object local) throws NumberFormatException,
 			Exception {
 		/**
@@ -343,6 +364,16 @@ public class FunctionExpression extends BaseExpression {
 		return StringUtility.Mid(str, from, length);
 	}
 
+	/**
+	 * LEFT(String str,int length)
+	 * 取str左面length长度的字符串
+	 * LEFT("ABCD",2)
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
 	private Object LEFT(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -359,7 +390,17 @@ public class FunctionExpression extends BaseExpression {
 		// StringUtility.Mid(str, from, length);
 		return StringUtility.Left(str, length);
 	}
-
+	/**
+	 * RIGHT(String str,int length)
+	 * 取str右面length长度的字符串
+	 * RIGHT("ABCD",2)
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
+	
 	private Object RIGHT(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -377,6 +418,16 @@ public class FunctionExpression extends BaseExpression {
 		return StringUtility.Right(str, length);
 	}
 
+	/**
+	 * UPPER(String str)
+	 * str变大写
+	 * UPPER("abc)
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
 	private Object UPPER(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -389,6 +440,16 @@ public class FunctionExpression extends BaseExpression {
 		return str.toUpperCase();
 	}
 
+	/**
+	 * LOWER(String str)
+	 * str转换为小写
+	 * LOWER("abc")
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
 	private Object LOWER(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -401,6 +462,16 @@ public class FunctionExpression extends BaseExpression {
 		return str.toLowerCase();
 	}
 
+	/**
+	 * TRIM(String str)
+	 * 去掉str两边空格
+	 * TRIM("  ABC   ")
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
 	private Object TRIM(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -413,6 +484,16 @@ public class FunctionExpression extends BaseExpression {
 		return str.trim();
 	}
 
+	/**
+	 * LEN(String str)
+	 * 获得str的长度
+	 * LEN("ABC")
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
 	private Object LEN(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回0
@@ -424,7 +505,16 @@ public class FunctionExpression extends BaseExpression {
 				.toString());
 		return str.length();
 	}
-
+/**
+ * INSTR(String str,String find)
+ * 判断str中是否包含find，如包含返回true，反之返回false
+ * INSTR("ABC","A")
+ * @param tree
+ * @param data
+ * @param local
+ * @return
+ * @throws Exception
+ */
 	private Object INSTR(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -441,7 +531,16 @@ public class FunctionExpression extends BaseExpression {
 
 		return str.indexOf(find) > -1;
 	}
-
+	/**
+	 * LIKE(String str,String find)
+	 * 检查输入的非空字符串是否与模板匹配，find为正则表达式，匹配返回True，否则返回False。
+	 * LIKE("ABC","[A]*")
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
 	private Object LIKE(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -456,7 +555,17 @@ public class FunctionExpression extends BaseExpression {
 		String find = String.valueOf(VisitSubTree(tree.getChild(2), data, local));
 		return str.matches(find);
 	}
-
+	/**
+	 * CHARINDEX(String str,String find):int
+	 * 输入2个不为空的字符串，在第1个字符串中，从指定的开始位置搜索第2个字符串第1次出现的位置。返回找到的位置，没找到则返回0
+	 * 参数1：字符串，参数2：字符串，返回值：位置（整形）
+	 * CHARINDEX("ABC","B")
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
 	private Object CHARINDEX(Tree tree, Object data, Object local) throws Exception {
 		/**
 		 * Aardwolf.K 如果数据库为null，则返回false
@@ -511,11 +620,11 @@ public class FunctionExpression extends BaseExpression {
 	}
 
 	/**
-	 * 返回两个日期相差的天数
+	 * 计算两个日期相差的天数
 	 * 
 	 * @param tree
 	 * @param data
-	 * @return
+	 * @return 
 	 * @throws Exception
 	 */
 	private Object DATEDIFF(Tree tree, Object data, Object local) throws Exception {

@@ -460,7 +460,6 @@ public class ExpressionFunctionHelper {
 	public static ArrayList filter(ArrayList collection,String key,String filter, HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		ArrayList<Object> result=new ArrayList<Object>();
-		//check key exist
 		if(!key.equals("") && local.containsKey(key)) throw new ExpressionException("FILTER");
 		
 		//format string

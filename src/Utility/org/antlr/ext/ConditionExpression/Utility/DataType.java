@@ -85,7 +85,8 @@ public class DataType
 		/**
 		 * Aardwolf.K
 		 * */
-		else if (NetFunction.isValidDate(value.toString())) {
+		//FIXME
+		else if (value instanceof Date || NetFunction.isValidDate(value.toString())) {
 			Date date = null;
 			try {
 				date = (Date)value;

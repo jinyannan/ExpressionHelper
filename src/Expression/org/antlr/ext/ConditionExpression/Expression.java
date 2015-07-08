@@ -1,12 +1,17 @@
 ﻿package org.antlr.ext.ConditionExpression;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import org.antlr.ext.ConditionExpression.Generated.ExpressionLexer;
 import org.antlr.ext.ConditionExpression.Generated.ExpressionParser;
+import org.antlr.ext.ConditionExpression.Utility.GetTypeUtility;
 import org.antlr.ext.ConditionExpression.Utility.IGetValue;
+import org.antlr.ext.ConditionExpression.Utility.ReflectionHelper;
 import org.antlr.ext.ConditionExpression.Visitor.KeysExpression;
 import org.antlr.ext.ConditionExpression.Visitor.RootExpression;
 import org.antlr.ext.ConditionExpression.Visitor.TypeExpression;
@@ -132,12 +137,14 @@ public class Expression {
 	}
 
 	public final Object ExecuteExpression(String exprCond, Object data) {
-		return ExecuteExpression(exprCond, data, null);
+		HashMap<String, Object> local = new HashMap<String, Object>();
+		return ExecuteExpression(exprCond, data, (Object)local);
 	}
 
 	public final Object ExecuteExpression(String exprCond, Object data,
 			Object local) {
-		String result = "";
+		Object result = null;
+		_expressionString = exprCond;
 		Object m = null;
 
 		try {
@@ -150,7 +157,8 @@ public class Expression {
 			if (m == null) {
 				result = "error";
 			} else {
-				result = m.toString();
+				//result = m.toString();
+				result = m;
 			}
 		} catch (Exception e) {
 			result = "error";
@@ -190,13 +198,13 @@ public class Expression {
 		return m;
 	}
 	
-	public final Object[] GetKeys(String exprCond){
+	public final String[] GetKeys(String exprCond){
 		HashMap<String, Object> data = new HashMap<String, Object>();
 		HashMap<String, Object> local = new HashMap<String, Object>();
 		return GetKeys(exprCond, data, local);
 	}
 	
-	public final Object[] GetKeys(String exprCond, Object data,
+	public final String[] GetKeys(String exprCond, Object data,
 			Object local) {
 		String result = "";
 		Object m = null;
@@ -211,7 +219,7 @@ public class Expression {
 			m = (Object) exp.Evaluate(data, local);
 			HashMap<String, HashSet<String>> hmlocal = (HashMap<String, HashSet<String>>) local;
 			HashSet<String> hs = hmlocal.get("DataKeys");
-			return hs.toArray();
+			return (String[]) hs.toArray();
 
 		} catch (Exception e) {
 			//result = "error";
@@ -221,7 +229,11 @@ public class Expression {
 		}
 	}
 	
-	public Object getType(String exprCond, Object data, Object local) {
+	public Object getType(String exprCond, Object data) throws Exception{
+		return getType(exprCond, data, null);
+	}
+	
+	public Object getType(String exprCond, Object data, Object local) throws Exception {
 		String result = "";
 		Object m = null;
 		_expressionString = exprCond;
@@ -235,9 +247,38 @@ public class Expression {
 			return (Object) exp.Evaluate(data, local);
 			
 		} catch (Exception e) {
-			result = "error";
-			return null;
+			throw e;
 		}
+	}
+	/**
+	 * 返回表达式结果对象的方法
+	 * @param exprCond
+	 * @param data
+	 * @return
+	 * @throws Exception 
+	 */
+	public ArrayList<Method> getTypeMethods(String exprCond, Object data) throws Exception {
+		return ReflectionHelper.getMethods((Class) getType(exprCond, data), "");
+	}
+	
+	/**
+	 * 返回表达式结果对象的属性
+	 * @param exprCond
+	 * @param data
+	 * @return
+	 * @throws Exception 
+	 */
+	public ArrayList<Field> getTypeFields(String exprCond, Object data) throws Exception {
+		return ReflectionHelper.getFields((Class) getType(exprCond, data), "");
+	}
+	
+	/**
+	 * 计算表达式返回类型时剪切不完整的表达式
+	 * @param exp
+	 * @return
+	 */
+	public String cutExpression(String exp) {
+		return new GetTypeUtility().cutExpression(exp);
 	}
 	
 }
