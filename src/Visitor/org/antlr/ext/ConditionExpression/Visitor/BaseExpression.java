@@ -57,7 +57,6 @@ public abstract class BaseExpression
 		{
 			switch (tree.getType())
 			{
-					///#region value
 				case ExpressionLexer.TYPE_INTEGER:
 				case ExpressionLexer.TYPE_STRING:
 				case ExpressionLexer.TYPE_DOUBLE:

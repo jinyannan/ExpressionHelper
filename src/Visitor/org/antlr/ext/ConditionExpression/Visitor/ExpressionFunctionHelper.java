@@ -1,14 +1,18 @@
 package org.antlr.ext.ConditionExpression.Visitor;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 
 import org.antlr.ext.ConditionExpression.*;
 import org.antlr.ext.ConditionExpression.Utility.*;
 import org.antlr.runtime.tree.Tree;
+
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 public class ExpressionFunctionHelper {
 	/**
@@ -1156,6 +1160,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	public static Object min(ArrayList col,String field) throws Exception
 	{
 		Object result=null;
@@ -1167,10 +1172,10 @@ public class ExpressionFunctionHelper {
 		
 		for(int i=0; i<col.size(); i++)
 		{
-			Object o=ReflectionHelper.getProperty(col.get(i), field);
+			Object o = ReflectionHelper.getProperty(col.get(i), field);
 			if(o instanceof Integer)
 			{
-				result=(result==null ? o :  ((Integer)result < (Integer)o ? result : o));
+				result = (result==null ? o :  ((Integer)result < (Integer)o ? result : o));
 			}
 			else{
 				if(o instanceof Double)
@@ -1191,6 +1196,129 @@ public class ExpressionFunctionHelper {
 	
 	/**
 	 * 
+	 * @param col
+	 * @param key
+	 * @param fieldCond
+	 * @return
+	 * @throws Exception
+	 */
+	public static Object min(ArrayList col,String key, String fieldCond) throws Exception
+	{
+		Object result=null;
+		Object lineResult = null;
+		ArrayList list = new ArrayList();
+		
+		if(col==null) throw new ExpressionException("min");
+		if(col.size()==0) throw new ExpressionException("min");
+		if(fieldCond==null) throw new ExpressionException("min");
+		if(fieldCond.equals("")) throw new ExpressionException("min");
+		
+		HashMap<String, Object> hmdata = new HashMap<String, Object>();
+		
+		for(int i=0; i<col.size(); i++)
+		{
+			hmdata.put(key, col.get(i));
+			lineResult = new Expression().ExecuteExpression(fieldCond, (Object)hmdata);
+			list.add(lineResult);			
+		}
+		
+		java.util.Collections.sort(list);
+		return list.get(0);
+		
+	}
+	
+	/**
+	 * 
+	 * @param col
+	 * @param key
+	 * @param fieldCond
+	 * @return
+	 * @throws Exception
+	 */
+	public static Object max(ArrayList col,String key, String fieldCond) throws Exception
+	{
+		Object result=null;
+		Object lineResult = null;
+		ArrayList list = new ArrayList();
+		
+		if(col==null) throw new ExpressionException("min");
+		if(col.size()==0) throw new ExpressionException("min");
+		if(fieldCond==null) throw new ExpressionException("min");
+		if(fieldCond.equals("")) throw new ExpressionException("min");
+		
+		HashMap<String, Object> hmdata = new HashMap<String, Object>();
+		
+		for(int i=0; i<col.size(); i++)
+		{
+			hmdata.put(key, col.get(i));
+			lineResult = new Expression().ExecuteExpression(fieldCond, (Object)hmdata);
+			list.add(lineResult);			
+		}
+		
+		java.util.Collections.sort(list);
+		return list.get(list.size() - 1);
+		
+	}
+	
+	
+	public static Object sum(ArrayList col,String key, String fieldCond) throws Exception
+	{
+		Object result=null;
+		Object lineResult = null;
+		ArrayList list = new ArrayList();
+		BigDecimal sumResult = BigDecimal.valueOf(0);
+		if(col==null) throw new ExpressionException("min");
+		if(col.size()==0) throw new ExpressionException("min");
+		if(fieldCond==null) throw new ExpressionException("min");
+		if(fieldCond.equals("")) throw new ExpressionException("min");
+		
+		HashMap<String, Object> hmdata = new HashMap<String, Object>();
+		
+		for(int i=0; i<col.size(); i++)
+		{
+			hmdata.put(key, col.get(i));
+			lineResult = new Expression().ExecuteExpression(fieldCond, (Object)hmdata);
+			list.add(lineResult);			
+		}
+		for (int i = 0; i < list.size(); i++) {
+			sumResult = sumResult.add((BigDecimal)list.get(i));
+		}
+		return sumResult;
+	}
+	
+	public static Object avg(ArrayList col,String key, String fieldCond) throws Exception
+	{
+		Object result=null;
+		Object lineResult = null;
+		ArrayList list = new ArrayList();
+		int scale = 10;
+		BigDecimal sumResult = BigDecimal.valueOf(0);
+		sumResult = sumResult.setScale(scale);
+		BigDecimal j = BigDecimal.valueOf(0);
+		j = j.setScale(scale);
+		
+		if(col==null) throw new ExpressionException("min");
+		if(col.size()==0) throw new ExpressionException("min");
+		if(fieldCond==null) throw new ExpressionException("min");
+		if(fieldCond.equals("")) throw new ExpressionException("min");
+		
+		HashMap<String, Object> hmdata = new HashMap<String, Object>();
+		
+		for(int i=0; i<col.size(); i++)
+		{
+			hmdata.put(key, col.get(i));
+			lineResult = new Expression().ExecuteExpression(fieldCond, (Object)hmdata);
+			list.add(lineResult);			
+		}
+		for (int i = 0; i < list.size(); i++) {
+//			j = (BigDecimal)list.get(i);
+			sumResult = sumResult.add((BigDecimal)list.get(i));
+		}
+		//j = sumResult.divide(BigDecimal.valueOf(list.size()), 4);
+		return sumResult.divide(BigDecimal.valueOf(list.size()), 4);
+	}
+	/**
+	 * 
 	 * @param collection
 	 * @param key
 	 * @param filter
@@ -1201,6 +1329,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	public static Object min(ArrayList collection,String key,String filter,String field,HashMap<String,Object> data,HashMap<String,Object> local) throws Exception
 	{
 		//call filter
@@ -1217,6 +1346,7 @@ public class ExpressionFunctionHelper {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	public static Object avg(ArrayList col,String field) throws Exception
 	{
 		Object result=ExpressionFunctionHelper.sum(col, field);

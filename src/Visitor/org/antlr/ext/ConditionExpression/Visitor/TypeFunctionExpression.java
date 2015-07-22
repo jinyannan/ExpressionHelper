@@ -89,7 +89,6 @@ public class TypeFunctionExpression extends TypeExpression {
 			CheckParamCount(funcName, 0);
 			return intClass();
 		}
-		// FIXME
 		else if (funcName.toUpperCase().equals("YEAR")) {
 			CheckParamCount(funcName, 0);
 			return intClass();

@@ -143,7 +143,7 @@ public class ReflectionHelper {
 			}
 			
 			if(setter==null){
-				throw new Exception("��Ա����("+funcname+")�Ҳ�����Ϊ˽�з�����");
+				throw new Exception("method ("+funcname+") not exist");
 			}
 			
 		}
@@ -180,13 +180,10 @@ public class ReflectionHelper {
 	public static Object invokeMethod(Object target,String funcname,Object[] params,Class[] classes) throws Exception
 	{
 		Object result=null;
-		//get data class
-		
 		
 		Method setter = ReflectionHelper.find(target.getClass(), funcname, classes);
 		
 		try{
-			//ִ��setterע��,no params
 			result=setter.invoke(target,params);
 		}
 		catch(Exception e)
@@ -282,11 +279,11 @@ public class ReflectionHelper {
 		//boolean getted=false;
 		
 		if(data ==null){
-			throw new Exception("����Ϊ�գ�");
+			throw new Exception("date is null");
 		}
 		
 		if(propsname==null || propsname.equals("")){
-			throw new Exception ("����ֵΪ��");
+			throw new Exception ("propsname is null");
 		}
 		
 		try{
@@ -309,6 +306,7 @@ public class ReflectionHelper {
         return result;
         
 	}
+	
 	
 	/**
 	 * 

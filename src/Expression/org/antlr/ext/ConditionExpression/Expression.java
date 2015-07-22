@@ -118,7 +118,8 @@ public class Expression {
 	}
 
 	public final Object Calculate(Object data) throws Exception {
-		return Calculate(data, null);
+		HashMap<String, Object> local = new HashMap<String, Object>();
+		return Calculate(data, (Object)local);
 	}
 
 	public final Object Calculate(Object data, Object local) throws Exception {
@@ -230,13 +231,14 @@ public class Expression {
 	}
 	
 	public Object getType(String exprCond, Object data) throws Exception{
-		return getType(exprCond, data, null);
+		HashMap<String, Object> local = new HashMap<String, Object>();
+		return getType(exprCond, data, (Object)local);
 	}
 	
 	public Object getType(String exprCond, Object data, Object local) throws Exception {
 		String result = "";
 		Object m = null;
-		_expressionString = exprCond;
+		_expressionString = cutExpression(exprCond);
 		
 		try {
 			Compile();
