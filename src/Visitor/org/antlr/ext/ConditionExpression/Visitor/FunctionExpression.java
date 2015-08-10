@@ -181,14 +181,18 @@ public class FunctionExpression extends BaseExpression {
 		} else if (funcName.equalsIgnoreCase("GlobalVar")) {
 			return true;
 		} else if (funcName.equalsIgnoreCase("Valid")) {
-			return null;
+			//XXX该函数尚未确定暂时返回true
+			return true;
 		} else if (funcName.equalsIgnoreCase("IsDate")) {
 			return isDate(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("ToDate")) {
 			return toDate(_tree, data, local);
 		} else if (funcName.equalsIgnoreCase("GetColValue")) {
 			return GetColValue(_tree, data, local);
-		}else {
+		}else if (funcName.equalsIgnoreCase("GetValueByCondition")) {
+			return GetValueByCondition(_tree, data, local);
+		}
+		else {
 			return CallUserFunction(funcName, _tree, data, local);
 		}
 	}
@@ -242,6 +246,34 @@ public class FunctionExpression extends BaseExpression {
 		
 		PersistenceSwitchHelper persistence = new PersistenceSwitchHelper();
 		return persistence.getFieldValue(value, propsname);
+	}
+	/**
+	 * 返回特殊行列的值
+	 * 参数有
+	 * @param tree
+	 * @param data
+	 * @param local
+	 * @return
+	 * @throws Exception
+	 */
+	
+	private Object GetValueByCondition(Tree tree, Object data, Object local) throws Exception{
+		ArrayList<?> value = (ArrayList<?>)VisitSubTree(tree.getChild(1), data, local);
+		//String key = (String)VisitSubTree(tree.getChild(2), data, local);
+		Integer pos = (Integer)VisitSubTree(tree.getChild(2), data, local);
+		String fieldName = (String)VisitSubTree(tree.getChild(3), data, local);
+		
+//		HashMap<String, Object> hmlocal = (HashMap<String, Object>)local;
+//		hmlocal.put(key, value.get(pos));
+
+		if (value == null || pos == null || fieldName == null) {
+			return false;
+		}
+		
+		PersistenceSwitchHelper persistence = new PersistenceSwitchHelper();
+//		hmlocal.remove(key);
+		
+		return persistence.getFieldValue(value.get(pos), fieldName);
 	}
 	
 	/**

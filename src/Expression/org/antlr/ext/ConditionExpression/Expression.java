@@ -146,6 +146,10 @@ public class Expression {
 			Object local) {
 		Object result = null;
 		_expressionString = exprCond;
+		
+		if (exprCond == null || exprCond.trim().equals("")) {
+			return true;
+		}
 		Object m = null;
 
 		try {
